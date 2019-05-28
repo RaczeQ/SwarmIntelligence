@@ -1,4 +1,4 @@
-from Bee import Bee
+from BeeColony.Bee import Bee
 
 class EmployeeBee(Bee):
     
