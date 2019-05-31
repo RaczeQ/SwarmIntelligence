@@ -12,6 +12,9 @@ class EmployeeBee(Bee):
             possition_fitness = self.evaluate_position(position)
             self.update_position(position, possition_fitness)
 
+
     def get_probability(self):
         # fomula
         return 0
+    
+

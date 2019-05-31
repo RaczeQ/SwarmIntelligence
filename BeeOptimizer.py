@@ -5,7 +5,6 @@ from BeeColony.OnLookerBee import OnLookerBee
 
 class BeeOptimizer(SwarmOptimizer):
 
-
     def initialize_population(self):
         self.initialize_employees()
         self.initialize_outlookers()
@@ -16,4 +15,8 @@ class BeeOptimizer(SwarmOptimizer):
 
     def initialize_outlookers(self):
         self.outlookers = [OnLookerBee(self.objective_function) for  i in range(int(self.population_size/2))]
+
+
+
+# 3 parametry: P - liczba źródeł ( populacja) , M - liczba prób tetsowych po których źródło jest wyczerpane, Cmax - maksymalna liczba cykli wykonania algorytmu
 
