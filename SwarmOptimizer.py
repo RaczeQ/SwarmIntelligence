@@ -18,7 +18,7 @@ class SwarmOptimizer():
 
   
     def initialize_sources(self):
-        self.objective_function.sample_initial_positions(self.population_size)
+        self.sample_initial_positions()
     
 
       #inicjujemy współrzędne poczatkowych położeń z losowymi wartościami

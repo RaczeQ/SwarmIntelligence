@@ -21,7 +21,7 @@ class Entity():
 
     def reset_entity(self):
         self.trial = 0
-
+        
 
         
     @abc.abstractmethod

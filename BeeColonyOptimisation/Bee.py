@@ -1,4 +1,3 @@
-from Entity import Entity
 
 class Bee():
     #po Entity
@@ -20,16 +19,12 @@ class Bee():
     
     def evaluate_position(self, position):
         return self.objective_function.evaluate_position(position)
-        
-        
 
     def reset_bee(self):
         self.trial = 0
         self.probability = 0.0
         self.position = self.objective_function.sample_position()
         self.position_value= self.objective_function.evaluate_position(self.position)
-
-       
 
     def count_new_position(self):
         # tutaj sobie wstawiam wzorek

@@ -1,9 +1,16 @@
 
-from SwarmOptimizer import SwarmOptimizer
-from BeeColony.EmployeeBee import EmployeeBee
-from BeeColony.OnLookerBee import OnLookerBee
+from Optimisation.Optimizer import Optimizer
+from EmployeeBee import EmployeeBee
+from OnLookerBee import OnLookerBee
 
-class BeeOptimizer(SwarmOptimizer):
+class BeeOptimizer(Optimizer):
+
+    def __init__(self, objective_function, population_size, iteration_number):
+        super.__init__(objective_function, population_size, iteration_number)
+
+    def initialize_parameters(self):
+        super(BeeOptimizer, self).initialize_parameters()
+        self.initialize_population()
 
     def initialize_population(self):
         self.initialize_employees()

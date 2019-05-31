@@ -1,4 +1,4 @@
-
+from Optimisation.Optimizer import Optimizer
 
 class Particle():
 
@@ -8,6 +8,13 @@ class Particle():
         self.position = objective_function.sample_position()
         self.fitness= objective_function.evaluate_fitness(self.position)
 
-
         self.velocity = velocity
+
+    def count_new_position(self):
+        pass
+
+    def sample_
+
+
+    
         
