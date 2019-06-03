@@ -12,10 +12,11 @@ class BeeOptimizer(Optimizer):
     def __init__(self, objective_function, population_size, iteration_number, max_trials):
         super().__init__(objective_function, population_size, iteration_number)
         self.max_trials = max_trials
+        self.the_best_found_solutions=[]
+        self.sources=[]      
 
     def initialize_swarm(self):
         self.initialize_population()
-        #self.initialize_sources()
 
     def initialize_population(self):
         self.initialize_employees()
@@ -27,15 +28,16 @@ class BeeOptimizer(Optimizer):
     def initialize_outlookers(self):
         self.outlookers = [OnLookerBee(self.objective_function) for  i in range(int(self.population_size/2))]
 
-    # def initialize_sources(self):
-    #     self.sources = np.random.rand(self.population_size, len(self.objective_function.dimention))
-    #     self.sources = [[ (self.sources[:, j].min() + i * (self.sources[:, j].max() - self.sources[:, j].min())) for i in range(len(self.objective_function.dimention))] for j in range(self.population_size)]
-
     def release_the_swarm(self):
         for i in range(self.iteration_number):
-            self.make_employee_bees_working()
-            self.make_outlooker_bees_working()
+            self.explore()
+            self.calculate_probabilities()
+            self.find_best_bees()
+            self.make_onlooker_bees_working()
 
+    def explore(self):
+        self.make_employee_bees_working()
+        
     def make_employee_bees_working(self):
         neighborhood = self.get_neighborhood_positions()
         for i in range(len(self.employeed)):
@@ -46,16 +48,28 @@ class BeeOptimizer(Optimizer):
     def get_neighborhood_positions(self):
         return [ [self.employeed[i].x, self.employeed[i].y] for i in range(len(self.employeed)) ]
 
-    def make_outlooker_bees_working(self):
+
+    def calculate_probabilities(self):
+        max_fitness =  max(e.fitness for e in self.employeed)   
+        for i in range(len(self.employeed)):
+            self.employeed[i].count_probability(max_fitness)
+
+    def find_best_bees(self):
+        max_prob = max(e.probability for e in self.employeed)
+        best_bee = list(filter(lambda b: b.probability == max_prob, self.employeed))
+        self.best_bees = best_bee
+
+    def make_onlooker_bees_working(self):
         for i in range(len(self.outlookers)):
-            pass
+            self.outlookers.onlook(self.best_bees, self.max_trials)
 
 
 #test
-o = Rastrigin(2.,10.,5.,60., 1.)
+o = Rastrigin(0.,100.,0.,200., 1.)
 b=BeeOptimizer(o, 10, 10, 6)
 b.initialize_swarm()
-b.make_employee_bees_working()
+b.release_the_swarm()
+
 
 # 3 parametry: P - liczba źródeł ( populacja) , M - liczba prób tetsowych po których źródło jest wyczerpane, Cmax - maksymalna liczba cykli wykonania algorytmu
 

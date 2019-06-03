@@ -9,15 +9,15 @@ class Entity():
 
     def set_entity_initial_parameters(self):
         self.x, self.y = self.objective_function.sample_position()
-        self.position_value= self.objective_function.evaluate(self.x, self.y)
+        self.fitness= self.objective_function.evaluate(self.x, self.y)
         self.trial = 0
 
     def update_position(self, x, y):
-        new_position_value= self.evaluate_position(x, y)
-        if(new_position_value >= self.position_value):
+        new_fitness= self.evaluate_position(x, y)
+        if(new_fitness >= self.fitness):
             self.x = x
             self.y = y
-            self.position_value = new_position_value
+            self.fitness = new_fitness
         else:
             self.trial += 1
 
@@ -27,8 +27,3 @@ class Entity():
     def reset_entity(self):
         self.set_entity_initial_parameters()
         
-
-
-    @abc.abstractmethod
-    def count_new_position(self):   
-        return
