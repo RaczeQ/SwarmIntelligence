@@ -1,31 +1,35 @@
+import sys
+sys.path.insert(1, '.')
 
-class Bee():
-    #po Entity
+from Optimisation.Entity import Entity
+from ObjectiveFunction.Rastrigin import Rastrigin
 
-    def __init__(self, objective_function):
-        self.objective_function = objective_function
-        self.position = objective_function.sample_position()
-        self.position_value= objective_function.evaluate_position(self.position)
-        self.trial = 0 
+
+class Bee(Entity):
+    def __init__(self, objective_function):     
+        super().__init__(objective_function)
+   
+    def set_entity_initial_parameters(self):
+        super().set_entity_initial_parameters()
         self.probability = 0.0
-
-    def update_position(self, new_position):
-        new_position_value= self.evaluate_position(new_position)
-        if(new_position_value >= self.position_value):
-            self.position = new_position
-            self.position_value = new_position_value
-        else:
-            self.trial += 1
-    
-    def evaluate_position(self, position):
-        return self.objective_function.evaluate_position(position)
 
     def reset_bee(self):
-        self.trial = 0
-        self.probability = 0.0
-        self.position = self.objective_function.sample_position()
-        self.position_value= self.objective_function.evaluate_position(self.position)
+        self.set_entity_initial_parameters()
 
-    def count_new_position(self):
-        # tutaj sobie wstawiam wzorek
-        return 0
+
+    # def find_candidate_solution(self):
+    #     dim = self.sample_dimention()
+    #     neighbor = self.sample_neighbor()
+    #     return  np.random.rand() 
+      
+    # def sample_dimention():
+    #     pass
+
+    # def sample_neighbor():
+    #     pass
+
+#test
+o = Rastrigin(2.,10.,5.,60., 1.)
+b=Bee(o)
+
+

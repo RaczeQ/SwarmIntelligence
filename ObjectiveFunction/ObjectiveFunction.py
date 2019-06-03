@@ -1,23 +1,16 @@
-import numpy as np
+from abc import ABC, abstractmethod
 
-class ObjectiveFunction():
+class ObjectiveFunction(ABC):
+    def __init__(self, x_min, x_max, y_min, y_max):
+        self.x_min = x_min
+        self.x_max = x_max
+        self.y_min = y_min
+        self.y_max = y_max
 
-    def __init__(self, dimention):
-
-        self.dimention = dimention #array ?
-        self.x_min = 0 # ?
-        self.x_max = 0 # ?
-        self.sources=[]
-
-    def count_objective_function(self):
+    @abstractmethod
+    def evaluate(self, x, y):
         pass
 
-
-    def evaluate_position(self, position):
-        pass
-    
-    #zwraca losowe indeksy nowej pozycji
+    @abstractmethod
     def sample_position(self):
         pass
-
-

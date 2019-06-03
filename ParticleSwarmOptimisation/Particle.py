@@ -12,9 +12,4 @@ class Particle():
 
     def count_new_position(self):
         pass
-
-    def sample_
-
-
-    
         

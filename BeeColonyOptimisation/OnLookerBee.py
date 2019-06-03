@@ -1,4 +1,4 @@
-from BeeColony.Bee import Bee
+from Bee import Bee
 
 class OnLookerBee(Bee):
     
