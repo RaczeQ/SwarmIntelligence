@@ -8,7 +8,7 @@ class Optimizer():
         self.population_size = population_size
         self.iteration_number = iteration_number
         self.optimal_solution = None
-        
+        self.optimal_tracing=[]
         
     
     def find_optimal_solution(self):

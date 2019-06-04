@@ -12,8 +12,6 @@ class BeeOptimizer(Optimizer):
     def __init__(self, objective_function, population_size, iteration_number, max_trials):
         super().__init__(objective_function, population_size, iteration_number)
         self.max_trials = max_trials
-        self.the_best_found_solutions=[]
-        self.sources=[]      
 
     def initialize_swarm(self):
         self.initialize_population()
@@ -33,21 +31,11 @@ class BeeOptimizer(Optimizer):
             self.explore()
             self.calculate_probabilities()
             self.find_best_bees()
-            self.make_onlooker_bees_working()
-
+            self.onlook()
+            self.check_optimal_solution()
+            
     def explore(self):
         self.make_employee_bees_working()
-        
-    def make_employee_bees_working(self):
-        neighborhood = self.get_neighborhood_positions()
-        for i in range(len(self.employeed)):
-            copy = neighborhood.copy()
-            copy.pop(i)
-            self.employeed[i].explore_neighborhood(copy)
-
-    def get_neighborhood_positions(self):
-        return [ [self.employeed[i].x, self.employeed[i].y] for i in range(len(self.employeed)) ]
-
 
     def calculate_probabilities(self):
         max_fitness =  max(e.fitness for e in self.employeed)   
@@ -59,10 +47,26 @@ class BeeOptimizer(Optimizer):
         best_bee = list(filter(lambda b: b.probability == max_prob, self.employeed))
         self.best_bees = best_bee
 
+    def onlook(self):
+        self.make_onlooker_bees_working()
+
+    def check_optimal_solution(self):
+        # tracing
+        pass
+
+    def make_employee_bees_working(self):
+        neighborhood = self.get_neighborhood_positions()
+        for i in range(len(self.employeed)):
+            copy = neighborhood.copy()
+            copy.pop(i)
+            self.employeed[i].explore_neighborhood(copy)
+
+    def get_neighborhood_positions(self):
+        return [ [self.employeed[i].x, self.employeed[i].y] for i in range(len(self.employeed)) ]
+
     def make_onlooker_bees_working(self):
         for i in range(len(self.outlookers)):
             self.outlookers.onlook(self.best_bees, self.max_trials)
-
 
 #test
 o = Rastrigin(0.,100.,0.,200., 1.)

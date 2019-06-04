@@ -17,7 +17,16 @@ class Bee(Entity):
         self.probability = Bee.INITIAL_PROBABILITY
 
     def reset_bee(self):
-        self.set_entity_initial_parameters()
+        super().reset_entity()
+
+    def update_position(self, x, y):
+        new_fitness= self.evaluate_position(x, y)
+        if(new_fitness >= self.fitness):
+            self.x = x
+            self.y = y
+            self.fitness = new_fitness
+        else:
+            self.trial += 1
 
 #test
 o = Rastrigin(2.,10.,5.,60., 1.)

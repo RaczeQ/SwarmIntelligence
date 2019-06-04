@@ -6,17 +6,15 @@ class EmployeeBee(Bee):
         super().__init__(objective_function)
         self.max_trials = max_trials
 
-
     def explore_neighborhood(self, neighborhood):
         if(self.trial < self.max_trials):
             x, y = self.sample_new_position(neighborhood)
             self.update_position(x, y)
         else:
-            self.reset_bee()
+            super().reset_bee()
             x, y = self.sample_new_position(neighborhood)
             self.update_position(x, y)
           
-
     def sample_new_position(self, neighborhood):
         coordinates = ['x', 'y']
         choice = random.choice(coordinates)
@@ -27,8 +25,8 @@ class EmployeeBee(Bee):
         else:
             return ( self.x , self.y + random.uniform(-1, 1)* (self.y - chosen_index[1]))
 
-
     # lub przez sumę -> widzialam dwa różne rozwiązania 
+    # wzór do sprawdzenia
     def count_probability(self, max_fitness):
         print(0.9 * (self.fitness / max_fitness) +0.1)
         self.probability = 0.9 * (self.fitness / max_fitness) +0.1
