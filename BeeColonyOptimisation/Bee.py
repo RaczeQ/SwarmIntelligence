@@ -23,6 +23,7 @@ class Bee(Entity):
     def update_position(self, x, y):
         try:
             new_fitness= self.evaluate_position(x, y) 
+            #print(new_fitness)
             if(new_fitness >= self.fitness):
                 self.x = x
                 self.y = y
@@ -30,7 +31,8 @@ class Bee(Entity):
             else:
                 self.trial += 1
         except AssertionError:
-                logging.error("The bee was trying to escape outside the boundaries!")
+            pass
+               # logging.error("The bee was trying to escape outside the boundaries!")
 
 #test
 o = Rastrigin(2.,10.,5.,60., 1.)

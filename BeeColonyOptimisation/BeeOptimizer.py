@@ -39,7 +39,8 @@ class BeeOptimizer(Optimizer):
         self.make_employee_bees_working()
 
     def calculate_probabilities(self):
-        max_fitness =  max(e.fitness for e in self.employeed)   
+        max_fitness =  max(e.fitness for e in self.employeed) 
+        print("The best fitness: "+str(max_fitness)) 
         for i in range(len(self.employeed)):
             self.employeed[i].count_probability(max_fitness)
 
@@ -48,7 +49,7 @@ class BeeOptimizer(Optimizer):
         best_bee = list(filter(lambda b: b.probability == max_prob, self.employeed))
         self.best_bees = best_bee
         
-        print("The best bee, prob: "+str(max_prob))
+      #  print("The best bee, prob: "+str(max_prob))
 
     def onlook(self):
         self.make_onlooker_bees_working()
@@ -73,7 +74,7 @@ class BeeOptimizer(Optimizer):
 
 #test
 o = Rastrigin(0.,100.,0.,200., 1.)
-b=BeeOptimizer(o, 10, 10, 6)
+b=BeeOptimizer(o, 50, 100, 6)
 b.initialize_swarm()
 b.release_the_swarm()
 
