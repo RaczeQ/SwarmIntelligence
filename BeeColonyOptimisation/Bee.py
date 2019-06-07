@@ -3,7 +3,7 @@ sys.path.insert(1, '.')
 
 from Optimisation.Entity import Entity
 from ObjectiveFunction.Rastrigin import Rastrigin
-
+import logging
 
 class Bee(Entity):
 
@@ -20,13 +20,16 @@ class Bee(Entity):
         super().reset_entity()
 
     def update_position(self, x, y):
-        new_fitness= self.evaluate_position(x, y)
-        if(new_fitness >= self.fitness):
-            self.x = x
-            self.y = y
-            self.fitness = new_fitness
-        else:
-            self.trial += 1
+        try:
+            new_fitness= self.evaluate_position(x, y) 
+            if(new_fitness >= self.fitness):
+                self.x = x
+                self.y = y
+                self.fitness = new_fitness
+            else:
+                self.trial += 1
+        except AssertionError:
+                logging.error("The bee was trying to escape outside the boundaries!")
 
 #test
 o = Rastrigin(2.,10.,5.,60., 1.)

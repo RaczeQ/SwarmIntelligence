@@ -2,7 +2,7 @@ import sys
 sys.path.insert(1, '.')
 from Optimisation.Optimizer import Optimizer
 from ParticleSwarmOptimisation.Particle import Particle
-
+import logging
 
 class ParticleSwarmOptimizer(Optimizer):
 
@@ -30,7 +30,10 @@ class ParticleSwarmOptimizer(Optimizer):
         
     def explore(self):
         for i in range(len(self.particles)):
-            self.particles[i].explore_neighborhood(self.g_best_particle)
+            try:
+                self.particles[i].explore_neighborhood(self.g_best_particle)
+            except AssertionError:
+                logging.error("The particle was trying to escape outside the boundaries!")
 
 
 

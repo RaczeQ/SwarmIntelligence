@@ -28,5 +28,4 @@ class EmployeeBee(Bee):
     # lub przez sumę -> widzialam dwa różne rozwiązania 
     # wzór do sprawdzenia
     def count_probability(self, max_fitness):
-        print(0.9 * (self.fitness / max_fitness) +0.1)
         self.probability = 0.9 * (self.fitness / max_fitness) +0.1

@@ -7,6 +7,7 @@ from EmployeeBee import EmployeeBee
 from OnLookerBee import OnLookerBee
 from ObjectiveFunction.Rastrigin import Rastrigin
 import numpy as np
+import logging
 class BeeOptimizer(Optimizer):
 
     def __init__(self, objective_function, population_size, iteration_number, max_trials):
@@ -46,6 +47,8 @@ class BeeOptimizer(Optimizer):
         max_prob = max(e.probability for e in self.employeed)
         best_bee = list(filter(lambda b: b.probability == max_prob, self.employeed))
         self.best_bees = best_bee
+        
+        print("The best bee, prob: "+str(max_prob))
 
     def onlook(self):
         self.make_onlooker_bees_working()
@@ -60,13 +63,13 @@ class BeeOptimizer(Optimizer):
             copy = neighborhood.copy()
             copy.pop(i)
             self.employeed[i].explore_neighborhood(copy)
-
+        
     def get_neighborhood_positions(self):
         return [ [self.employeed[i].x, self.employeed[i].y] for i in range(len(self.employeed)) ]
 
     def make_onlooker_bees_working(self):
         for i in range(len(self.outlookers)):
-            self.outlookers.onlook(self.best_bees, self.max_trials)
+            self.outlookers[i].onlook(self.best_bees, self.max_trials)
 
 #test
 o = Rastrigin(0.,100.,0.,200., 1.)

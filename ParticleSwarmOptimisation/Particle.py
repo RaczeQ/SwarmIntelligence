@@ -32,9 +32,11 @@ class Particle(Entity):
 
 
     def update_position(self, x, y):
+        
+        self.fitness = self.evaluate_position(x, y)
         self.x = x
         self.y = y
-        self.fitness = self.evaluate_position(x, y)
+        
         
     def update_p_best(self):
         if(self.p_best_fitness < self.fitness):
