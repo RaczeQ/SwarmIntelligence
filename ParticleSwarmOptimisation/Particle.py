@@ -9,6 +9,7 @@ class Particle(Entity):
 
     def __init__(self, objective_function, weight, c1, c2):
         super().__init__(objective_function)
+        self.set_entity_initial_parameters(weight, c1, c2)
         
     def set_entity_initial_parameters(self, weight, c1, c2):
         super().set_entity_initial_parameters()

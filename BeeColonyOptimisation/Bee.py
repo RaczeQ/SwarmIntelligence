@@ -11,6 +11,7 @@ class Bee(Entity):
 
     def __init__(self, objective_function):     
         super().__init__(objective_function)
+        self.set_entity_initial_parameters()
         
     def set_entity_initial_parameters(self):
         super().set_entity_initial_parameters()

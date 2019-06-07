@@ -4,7 +4,7 @@ class Entity():
 
     def __init__(self, objective_function):
         self.objective_function = objective_function
-        self.set_entity_initial_parameters()
+        #self.set_entity_initial_parameters()
     
 
     def set_entity_initial_parameters(self):
