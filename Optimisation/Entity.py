@@ -1,11 +1,12 @@
-import abc
-
-class Entity():
+class Entity(object):
+    x = None
+    y = None
+    fitness = None
+    color = None
 
     def __init__(self, objective_function):
         self.objective_function = objective_function
         #self.set_entity_initial_parameters()
-    
 
     def set_entity_initial_parameters(self):
         self.x, self.y = self.objective_function.sample_position()

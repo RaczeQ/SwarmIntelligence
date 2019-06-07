@@ -1,19 +1,32 @@
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.colors import BoundaryNorm
-from matplotlib.ticker import MaxNLocator
 
 from ObjectiveFunction import Rastrigin
+from Animator import Plotter
+from Optimisation import Entity
 
-dx, dy = 0.05, 0.05
+R = Rastrigin(-5, 5, -5, 5, 10)
+p = Plotter(
+    obj_function=R,
+    algorithm_name="Bee"
+)
 
-# generate 2 2d grids for the x & y bounds
-y, x = np.mgrid[slice(-5, 5 + dy, dy),
-                slice(-5, 5 + dx, dx)]
+entities = [
+    Entity(R),
+    Entity(R),
+    Entity(R),
+    Entity(R),
+    Entity(R),
+]
 
-R = Rastrigin(-5, 5, -5, 5)
+for i in range(25):
+    for e in entities:
+        e.set_entity_initial_parameters()
 
-z = [[R.evaluate(x,y) for x in ]]
-z = z[:-1, :-1]
-levels = MaxNLocator(nbins=15).tick_values(z.min(), z.max())
+    best_val = entities[2].fitness
+
+    p.add_frame(i, entities, best_val)
+    print(i, best_val)
+
+p.save_animation('test')
