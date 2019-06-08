@@ -43,7 +43,7 @@ class Plotter(object):
         self.colorbar = plt.colorbar(pcolor, cax=self.cax)
         _, self.cax = self.fig.get_axes()
 
-        self.ax.plot(self.best_pos_x, self.best_pos_y, color='k', marker='+')
+        self.ax.plot(self.best_pos_x, self.best_pos_y, color='w', marker='+')
 
         best_entity = None
 
