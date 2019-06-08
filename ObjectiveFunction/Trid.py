@@ -11,7 +11,7 @@ class Trid(ObjectiveFunction):
     
     def evaluate(self, x, y):
         val = (x-1)**2 + (y-1)**2 - x*y
-        return -val
+        return val
     
     def sample_position(self):
         x = self.x_min + random.uniform(0, 1)*(self.x_max - self.x_min)

@@ -81,10 +81,10 @@ o = Rastrigin()
 
 configuration_settings={'population_size': 10,
                 'iteration_number': 1000,
-                'max_trials' : 15}
+                'max_trials' : 5}
 
 configuration = list(configuration_settings.values())
-b=BeeOptimizer(o, configuration, fn, -1)
+b=BeeOptimizer(o, configuration, fn, 1)
 
 b.initialize_swarm()
 b.release_the_swarm()

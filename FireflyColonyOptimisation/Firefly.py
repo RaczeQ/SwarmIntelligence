@@ -19,11 +19,19 @@ class Firefly(Entity):
         self.luminosity  =  self.fitness
 
     def explore_neighborhood(self, neighborhood):
-        for i in range(neighborhood):
-            if(neighborhood[i].luminosity > self.luminosity):
-                d = math.sqrt(math.pow(self.x - neighborhood[i].x, 2) + math.pow(self.y - neighborhood[i].y, 2))
-                beta = self.max_beta * math.pow(math.exp, self.absorption_coefficient * math.pow(d, 2))
-                self.move_firefly(beta, neighborhood[i].x, neighborhood[i].y)        
+        for i in range(len(neighborhood)):
+            if(self.factor==1):
+                if(neighborhood[i].luminosity > self.luminosity):
+                    self.move_forward(neighborhood[i])       
+            else:
+                if(neighborhood[i].luminosity < self.luminosity):
+                   self.move_forward(neighborhood[i])
+
+    def move_forward(self, neighbor):
+        d = math.sqrt(math.pow(self.x - neighbor.x, 2) + math.pow(self.y - neighbor.y, 2))
+        power = -self.absorption_coefficient * math.pow(d, 2)
+        beta = self.max_beta * math.exp(power)
+        self.move_firefly(beta, neighbor.x, neighbor.y)   
 
     def move_firefly(self, beta=0, neighbor_x=0, neighbor_y=0):
         u_x, u_y = self.objective_function.sample_position()
@@ -37,13 +45,19 @@ class Firefly(Entity):
 
     def update_position(self,  x, y):       
         try:
-            new_fitness= self.evaluate_position(x, y) 
-            #print(new_fitness)
-            if(new_fitness >= self.fitness):
-                self.set_new_position(x,y)
-                self.fitness = new_fitness
+            new_luminosity =  self.evaluate_position(x, y) 
+            if(self.factor==1):
+                if(new_luminosity >= self.luminosity):
+                    self.set_new_position(x,y)
+                    self.luminosity = new_luminosity
+                else:
+                    self.trial += 1
             else:
-                self.trial += 1
+                if(new_luminosity <= self.luminosity):
+                    self.set_new_position(x,y)
+                    self.luminosity = new_luminosity
+                else:
+                    self.trial += 1
         except AssertionError:
             logging.error("The firefly was trying to escape outside the boundaries!")
 

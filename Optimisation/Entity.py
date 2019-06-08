@@ -13,7 +13,6 @@ class Entity(object):
         self.x, self.y = self.objective_function.sample_position()
         self.fitness= self.objective_function.evaluate(self.x, self.y)
         self.trial = 0
-       # print("initial x="+str(self.x) + " initial y="+str(self.y) + ' initial fitness='+str(self.fitness))
 
     def set_new_position(self, x, y):
         self.history_of_points.append((self.x, self.y))

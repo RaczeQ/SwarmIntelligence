@@ -12,7 +12,7 @@ class Rastrigin(ObjectiveFunction):
     
     def evaluate(self, x, y):
         val = self.A + (x**2 - self.A * np.cos(2 * math.pi * x)) + (y**2 - self.A * np.cos(2 * math.pi * y))
-        return -val
+        return val
     
     def sample_position(self):
         x = self.x_min + random.uniform(0, 1)*(self.x_max - self.x_min)

@@ -52,8 +52,8 @@ class ParticleSwarmOptimizer(Optimizer):
 fn = 'particle'
 o = Rastrigin()
 
-configuration_settings={'population_size': 100,
-                'iteration_number': 1000,
+configuration_settings={'population_size': 10,
+                'iteration_number': 10000,
                 'weight' : 0.6,
                 'c1': 0.6,
                 'c2' : 0.2}

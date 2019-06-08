@@ -11,7 +11,7 @@ class Bukin6(ObjectiveFunction):
     
     def evaluate(self, x, y):
         val = 100 * np.sqrt(np.abs(y - 0.01 * x ** 2)) + 0.01 + np.abs(x + 10)
-        return -val
+        return val
     
     def sample_position(self):
         x = self.x_min + random.uniform(0, 1)*(self.x_max - self.x_min)
