@@ -23,12 +23,8 @@ class Plotter(object):
         self.X, self.Y = np.meshgrid(X, Y)
         Z = obj_function.evaluate(self.X, self.Y)
 
-        if obj_function.factor > 0:
-            x, y = np.unravel_index(np.argmax(Z), Z.shape)
-        else:
-            x, y = np.unravel_index(np.argmin(Z), Z.shape)
-        self.best_pos_x = self.X[x][y]
-        self.best_pos_y = self.Y[x][y]
+        self.best_pos_x = obj_function.best_pos[0]
+        self.best_pos_y = obj_function.best_pos[1]
 
         self.Z = Z[:-1, :-1]
         self.X_min, self.X_max = self.X.min(), self.X.max()
@@ -51,7 +47,7 @@ class Plotter(object):
 
         best_entity = None
 
-        self.ax.text(1, 1.01, f'Function: {self.func_name}\nAlgorithm: {self.alg_name}', ha='right', transform=self.ax.transAxes)
+        self.ax.text(1, 1.01, f'Function: {self.func_name} [{self.best_pos_x}, {self.best_pos_y}]\nAlgorithm: {self.alg_name}', ha='right', transform=self.ax.transAxes)
 
         if best_value is not None:
             self.ax.text(0, 1.01, f'Iteration: {frame_no:5d}\nBest value: {best_value:.3f}', transform=self.ax.transAxes)

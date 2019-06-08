@@ -9,7 +9,7 @@ class Rosenbrock(ObjectiveFunction):
     def __init__(self, x_min=-2, x_max=2, y_min=-1, y_max=3, a=1, b=100):
         self.a = a
         self.b = b
-        super().__init__(x_min, x_max, y_min, y_max, -1)
+        super().__init__(x_min, x_max, y_min, y_max, (self.a, self.a**2), -1)
     
     def evaluate(self, x, y):
         return (self.a - x)**2 + self.b*(y - x**2)**2
