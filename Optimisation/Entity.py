@@ -4,7 +4,7 @@ class Entity(object):
     fitness = None
     color = None
 
-    def __init__(self, objective_function, factor = -1):
+    def __init__(self, objective_function, factor = 1):
         self.objective_function = objective_function
         self.factor = factor
 

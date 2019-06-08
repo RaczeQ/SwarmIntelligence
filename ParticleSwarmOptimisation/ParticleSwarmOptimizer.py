@@ -6,8 +6,8 @@ import logging
 
 class ParticleSwarmOptimizer(Optimizer):
 
-    def __init__(self, objective_function, population_size, iteration_number, weight, c1, c2):
-        super.__init__(objective_function, population_size, iteration_number)
+    def __init__(self, objective_function, population_size, iteration_number, weight, c1, c2, factor):
+        super.__init__(objective_function, population_size, iteration_number, factor)
         self.g_best_particle = None
         self.weight = weight
         self.c1 = c1

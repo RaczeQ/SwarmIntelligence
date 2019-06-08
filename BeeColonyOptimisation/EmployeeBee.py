@@ -26,8 +26,6 @@ class EmployeeBee(Bee):
         else:
             return ( self.x , self.y + random.uniform(-1, 1)* (self.y - chosen_index[1]))
 
-    # lub przez sumę -> widzialam dwa różne rozwiązania 
-    # wzór do sprawdzenia
+
     def count_probability(self, all_fitness):
-        #self.probability = 0.9 * (self.fitness / max_fitness) + 0.1
         self.probability = self.fitness / all_fitness
