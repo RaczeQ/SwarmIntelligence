@@ -31,13 +31,9 @@ class Particle(Entity):
         self.velocity_y = self.weight*self.velocity_y + self.c1 * random.uniform(0, 1) * (self.p_best_y - self.y) + self.c2 * random.uniform(0, 1) * (neighborhood.velocity_y)
         return (self.velocity_x + self.x, self.velocity_y + self.y)
 
-
     def update_position(self, x, y):
-        
         self.fitness = self.evaluate_position(x, y)
-        self.x = x
-        self.y = y
-        
+        self.set_new_position(x,y)
         
     def update_p_best(self):
         if(self.p_best_fitness < self.fitness):
