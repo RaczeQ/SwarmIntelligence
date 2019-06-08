@@ -13,7 +13,8 @@ class Ackley(ObjectiveFunction):
         super().__init__(x_min, x_max, y_min, y_max, (0,0), -1)
     
     def evaluate(self, x, y):
-        return -self.a*np.exp(-self.b*np.sqrt(0.5*(x**2 + y**2))) - np.exp(0.5*(np.cos(self.c*x) + np.cos(self.c*y))) + self.a + np.exp(1.0)
+        val = -self.a*np.exp(-self.b*np.sqrt(0.5*(x**2 + y**2))) - np.exp(0.5*(np.cos(self.c*x) + np.cos(self.c*y))) + self.a + np.exp(1.0)
+        return -val
     
     def sample_position(self):
         x = self.x_min + random.uniform(0, 1)*(self.x_max - self.x_min)

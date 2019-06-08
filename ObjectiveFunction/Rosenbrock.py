@@ -12,7 +12,8 @@ class Rosenbrock(ObjectiveFunction):
         super().__init__(x_min, x_max, y_min, y_max, (self.a, self.a**2), -1)
     
     def evaluate(self, x, y):
-        return (self.a - x)**2 + self.b*(y - x**2)**2
+        val = (self.a - x)**2 + self.b*(y - x**2)**2
+        return -val
     
     def sample_position(self):
         x = self.x_min + random.uniform(0, 1)*(self.x_max - self.x_min)

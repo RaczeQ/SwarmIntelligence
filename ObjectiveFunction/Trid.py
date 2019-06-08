@@ -10,7 +10,8 @@ class Trid(ObjectiveFunction):
         super().__init__(x_min, x_max, y_min, y_max, (2,2), -1)
     
     def evaluate(self, x, y):
-        return (x-1)**2 + (y-1)**2 - x*y
+        val = (x-1)**2 + (y-1)**2 - x*y
+        return -val
     
     def sample_position(self):
         x = self.x_min + random.uniform(0, 1)*(self.x_max - self.x_min)

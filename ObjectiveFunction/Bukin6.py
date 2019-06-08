@@ -10,7 +10,8 @@ class Bukin6(ObjectiveFunction):
         super().__init__(x_min, x_max, y_min, y_max, (-10, 1), -1)
     
     def evaluate(self, x, y):
-        return 100 * np.sqrt(np.abs(y - 0.01 * x ** 2)) + 0.01 + np.abs(x + 10)
+        val = 100 * np.sqrt(np.abs(y - 0.01 * x ** 2)) + 0.01 + np.abs(x + 10)
+        return -val
     
     def sample_position(self):
         x = self.x_min + random.uniform(0, 1)*(self.x_max - self.x_min)
