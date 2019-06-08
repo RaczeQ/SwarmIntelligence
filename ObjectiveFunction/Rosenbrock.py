@@ -5,13 +5,14 @@ import numpy as np
 from .ObjectiveFunction import ObjectiveFunction
 
 
-class Rastrigin(ObjectiveFunction):
-    def __init__(self, x_min=-5, x_max=5, y_min=-5, y_max=5, A = 10):
-        self.A = A
+class Rosenbrock(ObjectiveFunction):
+    def __init__(self, x_min=-2, x_max=2, y_min=-1, y_max=3, a=1, b=100):
+        self.a = a
+        self.b = b
         super().__init__(x_min, x_max, y_min, y_max, -1)
     
     def evaluate(self, x, y):
-        return self.A + (x**2 - self.A * np.cos(2 * math.pi * x)) + (y**2 - self.A * np.cos(2 * math.pi * y))
+        return (self.a - x)**2 + self.b*(y - x**2)**2
     
     def sample_position(self):
         x = self.x_min + random.uniform(0, 1)*(self.x_max - self.x_min)
