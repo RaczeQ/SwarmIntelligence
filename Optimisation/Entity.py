@@ -4,23 +4,16 @@ class Entity(object):
     fitness = None
     color = None
 
-    def __init__(self, objective_function):
+    def __init__(self, objective_function, factor = -1):
         self.objective_function = objective_function
-        #self.set_entity_initial_parameters()
+        self.factor = factor
 
     def set_entity_initial_parameters(self):
         self.x, self.y = self.objective_function.sample_position()
         self.fitness= self.objective_function.evaluate(self.x, self.y)
         self.trial = 0
+        print("initial x="+str(self.x) + " initial y="+str(self.y) + ' initial fitness='+str(self.fitness))
 
-    # def update_position(self, x, y):
-    #     new_fitness= self.evaluate_position(x, y)
-        # if(new_fitness >= self.fitness):
-        #     self.x = x
-        #     self.y = y
-        #     self.fitness = new_fitness
-        # else:
-        #     self.trial += 1
 
     def evaluate_position(self, x, y):
         return self.objective_function.evaluate(x, y)

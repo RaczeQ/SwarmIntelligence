@@ -2,9 +2,10 @@ from BeeColonyOptimisation.Bee import Bee
 import random
 class EmployeeBee(Bee):
     
-    def __init__(self, objective_function, max_trials ):
-        super().__init__(objective_function)
+    def __init__(self, objective_function, max_trials, factor):
+        super().__init__(objective_function, factor)
         self.max_trials = max_trials
+
 
     def explore_neighborhood(self, neighborhood):
         if(self.trial < self.max_trials):
@@ -27,5 +28,6 @@ class EmployeeBee(Bee):
 
     # lub przez sumę -> widzialam dwa różne rozwiązania 
     # wzór do sprawdzenia
-    def count_probability(self, max_fitness):
-        self.probability = 0.9 * (self.fitness / max_fitness) +0.1
+    def count_probability(self, all_fitness):
+        #self.probability = 0.9 * (self.fitness / max_fitness) + 0.1
+        self.probability = self.fitness / all_fitness

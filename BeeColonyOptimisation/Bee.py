@@ -9,10 +9,10 @@ class Bee(Entity):
 
     INITIAL_PROBABILITY=0.0
 
-    def __init__(self, objective_function):     
-        super().__init__(objective_function)
+    def __init__(self, objective_function, factor):     
+        super().__init__(objective_function, factor)
         self.set_entity_initial_parameters()
-        
+            
     def set_entity_initial_parameters(self):
         super().set_entity_initial_parameters()
         self.probability = Bee.INITIAL_PROBABILITY
@@ -23,19 +23,22 @@ class Bee(Entity):
     def update_position(self, x, y):
         try:
             new_fitness= self.evaluate_position(x, y) 
-            #print(new_fitness)
-            if(new_fitness >= self.fitness):
-                self.x = x
-                self.y = y
-                self.fitness = new_fitness
+            if(self.factor == 1):
+                if(new_fitness >= self.fitness):
+                    self.x = x
+                    self.y = y
+                    self.fitness = new_fitness
+                else:
+                    self.trial += 1
             else:
-                self.trial += 1
+                if(new_fitness <= self.fitness):
+                    self.x = x
+                    self.y = y
+                    self.fitness = new_fitness
+                else:
+                    self.trial += 1
         except AssertionError:
-            pass
-               # logging.error("The bee was trying to escape outside the boundaries!")
+            logging.error("The bee was trying to escape outside the boundaries!")
 
-#test
-o = Rastrigin(2.,10.,5.,60., 1.)
-b=Bee(o)
 
 
