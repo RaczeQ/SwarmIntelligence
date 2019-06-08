@@ -5,6 +5,7 @@ from Optimisation.Optimizer import Optimizer
 from Optimisation.Entity import Entity
 import random
 
+
 class Particle(Entity):
 
     def __init__(self, objective_function, weight, c1, c2):
@@ -27,10 +28,11 @@ class Particle(Entity):
         self.update_p_best()
        
     def sample_new_position(self, neighborhood):
-        self.velocity_x = self.weight*self.velocity_x + self.c1 * random.uniform(0, 1) * (self.p_best_x - self.x) + self.c2 * random.uniform(0, 1) * (neighborhood.velocity_x)
-        self.velocity_y = self.weight*self.velocity_y + self.c1 * random.uniform(0, 1) * (self.p_best_y - self.y) + self.c2 * random.uniform(0, 1) * (neighborhood.velocity_y)
+        bests = len(neighborhood)
+        sampled_best = random.randint(0, bests-1)
+        self.velocity_x = self.weight*self.velocity_x + self.c1 * random.uniform(0, 1) * (self.p_best_x - self.x) + self.c2 * random.uniform(0, 1) * (neighborhood[sampled_best].velocity_x)
+        self.velocity_y = self.weight*self.velocity_y + self.c1 * random.uniform(0, 1) * (self.p_best_y - self.y) + self.c2 * random.uniform(0, 1) * (neighborhood[sampled_best].velocity_y)
         return (self.velocity_x + self.x, self.velocity_y + self.y)
-
 
     def update_position(self, x, y):
         

@@ -56,9 +56,9 @@ class BeeOptimizer(Optimizer):
 
     def update_optimal_solution_tracking(self):
         if(self.factor == 1):
-            fitness =  max(e.fitness for e in self.employeed) 
+            fitness =  max(e.fitness for e in self.outlookers) 
         else:
-            fitness =  min(e.fitness for e in self.employeed) 
+            fitness =  min(e.fitness for e in self.outlookers) 
         self.optimal_tracing.append(fitness)
 
     def make_employee_bees_working(self):
@@ -84,7 +84,7 @@ configuration_settings={'population_size': 10,
                 'max_trials' : 15}
 
 configuration = list(configuration_settings.values())
-b=BeeOptimizer(o, configuration, fn, 1)
+b=BeeOptimizer(o, configuration, fn, -1)
 
 b.initialize_swarm()
 b.release_the_swarm()
