@@ -40,8 +40,7 @@ class Firefly(Entity):
             new_fitness= self.evaluate_position(x, y) 
             #print(new_fitness)
             if(new_fitness >= self.fitness):
-                self.x = x
-                self.y = y
+                self.set_new_position(x,y)
                 self.fitness = new_fitness
             else:
                 self.trial += 1

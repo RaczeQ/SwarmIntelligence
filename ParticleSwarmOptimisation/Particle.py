@@ -35,11 +35,8 @@ class Particle(Entity):
         return (self.velocity_x + self.x, self.velocity_y + self.y)
 
     def update_position(self, x, y):
-        
         self.fitness = self.evaluate_position(x, y)
-        self.x = x
-        self.y = y
-        
+        self.set_new_position(x,y)
         
     def update_p_best(self):
         if(self.p_best_fitness < self.fitness):
