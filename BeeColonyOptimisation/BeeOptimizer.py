@@ -25,10 +25,10 @@ class BeeOptimizer(Optimizer):
         self.initialize_outlookers()
 
     def initialize_employees(self):
-        self.employeed = [EmployeeBee(self.objective_function, self.max_trials, self.factor)  for i in range(int(self.population_size/2))]
+        self.employeed = [EmployeeBee(self.objective_function, self.max_trials)  for i in range(int(self.population_size/2))]
 
     def initialize_outlookers(self):
-        self.outlookers = [OnLookerBee(self.objective_function, self.factor) for  i in range(int(self.population_size/2))]
+        self.outlookers = [OnLookerBee(self.objective_function) for  i in range(int(self.population_size/2))]
 
     def release_the_swarm(self):
         for i in range(self.iteration_number):
@@ -80,12 +80,15 @@ class BeeOptimizer(Optimizer):
         for i in range(len(self.outlookers)):
             self.outlookers[i].onlook(self.best_bees, self.max_trials)
 
+    def save_state(self, file_name, line_history):
+        self.plotter.save_state_to_file(file_name, self.employeed + self.outlookers, line_history)
+
 #test
 fn = 'bee'
 o = Rastrigin()
 
-configuration_settings={'population_size': 50,
-                'iteration_number': 1000,
+configuration_settings={'population_size': 20,
+                'iteration_number': 50,
                 'max_trials' : 5}
 
 configuration = list(configuration_settings.values())
@@ -95,6 +98,8 @@ b.initialize_swarm()
 b.release_the_swarm()
 b.save_optimal_tracing(configuration_settings)
 b.save_animation('bees')
+b.save_state('bees_hist', False)
+# False - historia nie wygląda zbyt ładnie jeszcze
 
 # 3 parametry: P - liczba źródeł ( populacja) , M - liczba prób tetsowych po których źródło jest wyczerpane, Cmax - maksymalna liczba cykli wykonania algorytmu
 

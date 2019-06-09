@@ -2,8 +2,8 @@ from BeeColonyOptimisation.Bee import Bee
 import random
 class EmployeeBee(Bee):
     
-    def __init__(self, objective_function, max_trials, factor):
-        super().__init__(objective_function, factor)
+    def __init__(self, objective_function, max_trials):
+        super().__init__(objective_function)
         self.max_trials = max_trials
 
 

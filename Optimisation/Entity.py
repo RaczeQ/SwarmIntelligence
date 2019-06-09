@@ -5,9 +5,9 @@ class Entity(object):
     color = None
     history_of_points = []
 
-    def __init__(self, objective_function, factor = 1):
+    def __init__(self, objective_function):
         self.objective_function = objective_function
-        self.factor = factor
+        self.factor = objective_function.factor
 
     def set_entity_initial_parameters(self):
         self.x, self.y = self.objective_function.sample_position()

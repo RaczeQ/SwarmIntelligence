@@ -36,12 +36,14 @@ class Particle(Entity):
 
     def update_position(self, x, y):
         self.fitness = self.evaluate_position(x, y)
-        self.set_new_position(x,y)
+        self.x = x
+        self.y = y
         
     def update_p_best(self):
         if(self.p_best_fitness < self.fitness):
             self.p_best_x = self.x
             self.p_best_y = self.y
             self.p_best_fitness = self.fitness
+            self.set_new_position(self.p_best_x,self.p_best_y)
 
        
