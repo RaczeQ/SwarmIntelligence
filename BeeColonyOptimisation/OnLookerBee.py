@@ -4,7 +4,7 @@ import random
 class OnLookerBee(Bee):
 
     def __init__(self, objective_function):
-        super().__init__(objective_function, 'b', 'k')
+        super().__init__(objective_function, 'royalblue', 'w')
     
     def onlook(self,  best_bees, max_trial):
         candidate = np.random.choice(best_bees)
