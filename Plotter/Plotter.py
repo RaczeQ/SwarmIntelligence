@@ -19,7 +19,7 @@ def ensure_dir(directory):
         os.makedirs(directory)
 
 class Plotter(object):
-    def __init__(self, obj_function, algorithm_name, resolution=400, colormap=matplotlib.cm.RdYlGn):
+    def __init__(self, obj_function, algorithm_name, resolution=1000, colormap=matplotlib.cm.RdYlGn):
         self.func_name = obj_function.__class__.__name__
         self.alg_name = algorithm_name
         self.factor = obj_function.factor
