@@ -10,6 +10,7 @@ class Bukin6(ObjectiveFunction):
         super().__init__(x_min, x_max, y_min, y_max, (-10, 1), -1)
     
     def evaluate(self, x, y):
+        self.assert_boundaries(x, y)
         val = 100 * np.sqrt(np.abs(y - 0.01 * x ** 2)) + 0.01 + np.abs(x + 10)
         return val
     
