@@ -6,14 +6,14 @@ import abc
 from Optimisation.Entity import Entity
 class Optimizer():
 
-    def __init__(self, objective_function, population_size, iteration_number, result_file_name, factor=1):
+    def __init__(self, objective_function, population_size, iteration_number, result_file_name):
         self.objective_function = objective_function
         self.population_size = population_size
         self.iteration_number = iteration_number
         self.optimal_solution = None
         self.optimal_tracing=[]
         self.result_file_name = result_file_name
-        self.factor = factor
+        self.factor = objective_function.factor
         
     
     def find_optimal_solution(self):
@@ -44,3 +44,6 @@ class Optimizer():
         row =pd.DataFrame( result, columns=keys)
         df = pd.concat ([df, row], axis=0, ignore_index=True) 
         df.to_csv(file_path)
+
+    def save_animation(self, file_name):
+        self.plotter.save_animation(file_name)

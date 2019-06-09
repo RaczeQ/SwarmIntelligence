@@ -4,16 +4,18 @@ sys.path.insert(1, '.')
 from Optimisation.Optimizer import Optimizer
 from ParticleSwarmOptimisation.Particle import Particle
 from ObjectiveFunction.Rastrigin import Rastrigin
+from Plotter import Plotter
 import logging
 
 class ParticleSwarmOptimizer(Optimizer):
 
-    def __init__(self, objective_function, configuration, result_file_name, factor):
-        super().__init__(objective_function, configuration[0], configuration[1], result_file_name, factor)
+    def __init__(self, objective_function, configuration, result_file_name):
+        super().__init__(objective_function, configuration[0], configuration[1], result_file_name)
         self.g_best_particle = None
         self.weight = configuration[2]
         self.c1 = configuration[3]
         self.c2 = configuration[4]
+        self.plotter = Plotter(objective_function, 'PSO')
 
     def initialize_swarm(self):
         self.initialize_particles()
@@ -26,6 +28,7 @@ class ParticleSwarmOptimizer(Optimizer):
             self.find_g_best()
             self.explore()
             self.update_optimal_solution_tracking()
+            self.plotter.add_frame(i, self.particles, self.g_best_particle[0].fitness)
             
     def find_g_best(self):
         if(self.factor == 1):
@@ -59,8 +62,9 @@ configuration_settings={'population_size': 10,
                 'c2' : 0.2}
 
 configuration = list(configuration_settings.values())
-b=ParticleSwarmOptimizer(o, configuration, fn, 1)
+b=ParticleSwarmOptimizer(o, configuration, fn)
 
 b.initialize_swarm()
 b.release_the_swarm()
 b.save_optimal_tracing(configuration_settings)
+b.save_animation('pso')

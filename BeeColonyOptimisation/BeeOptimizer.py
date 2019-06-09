@@ -1,18 +1,21 @@
 import sys
 sys.path.insert(1, '.')
 
-
 from Optimisation.Optimizer import Optimizer
 from EmployeeBee import EmployeeBee
 from OnLookerBee import OnLookerBee
 from ObjectiveFunction.Rastrigin import Rastrigin
 import numpy as np
 import logging
+from Plotter import Plotter
+
+
 class BeeOptimizer(Optimizer):
 
-    def __init__(self, objective_function, configuration, result_file_name, factor):
-        super().__init__(objective_function, configuration[0], configuration[1] ,result_file_name, factor)
+    def __init__(self, objective_function, configuration, result_file_name):
+        super().__init__(objective_function, configuration[0], configuration[1] ,result_file_name)
         self.max_trials = configuration[2]
+        self.plotter = Plotter(objective_function, 'Bees')
 
     def initialize_swarm(self):
         self.initialize_population()
@@ -34,6 +37,8 @@ class BeeOptimizer(Optimizer):
             self.find_best_bees()
             self.onlook()
             self.update_optimal_solution_tracking()
+            self.plotter.add_frame(i, self.employeed + self.outlookers)
+            print(i)
             
     def explore(self):
         self.make_employee_bees_working()
@@ -79,16 +84,17 @@ class BeeOptimizer(Optimizer):
 fn = 'bee'
 o = Rastrigin()
 
-configuration_settings={'population_size': 10,
+configuration_settings={'population_size': 50,
                 'iteration_number': 1000,
                 'max_trials' : 5}
 
 configuration = list(configuration_settings.values())
-b=BeeOptimizer(o, configuration, fn, 1)
+b=BeeOptimizer(o, configuration, fn)
 
 b.initialize_swarm()
 b.release_the_swarm()
 b.save_optimal_tracing(configuration_settings)
+b.save_animation('bees')
 
 # 3 parametry: P - liczba źródeł ( populacja) , M - liczba prób tetsowych po których źródło jest wyczerpane, Cmax - maksymalna liczba cykli wykonania algorytmu
 
