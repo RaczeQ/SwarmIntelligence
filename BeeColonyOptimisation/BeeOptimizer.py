@@ -4,7 +4,7 @@ sys.path.insert(1, '.')
 from Optimisation.Optimizer import Optimizer
 from EmployeeBee import EmployeeBee
 from OnLookerBee import OnLookerBee
-from ObjectiveFunction.Rastrigin import Rastrigin
+from ObjectiveFunction import Rastrigin, Bukin6, Rosenbrock
 import numpy as np
 import logging
 from Plotter import Plotter
@@ -12,9 +12,10 @@ from Plotter import Plotter
 
 class BeeOptimizer(Optimizer):
 
-    def __init__(self, objective_function, configuration, result_file_name):
+    def __init__(self, objective_function, configuration, result_file_name, skip_frames=0):
         super().__init__(objective_function, configuration[0], configuration[1] ,result_file_name)
         self.max_trials = configuration[2]
+        self.skip_frames = skip_frames
         self.plotter = Plotter(objective_function, 'Bees')
 
     def initialize_swarm(self):
@@ -37,8 +38,10 @@ class BeeOptimizer(Optimizer):
             self.find_best_bees()
             self.onlook()
             self.update_optimal_solution_tracking()
-            self.plotter.add_frame(i, self.employeed + self.outlookers)
+            if self.skip_frames == 0 or i % self.skip_frames == 0:
+                self.plotter.add_frame(i, self.employeed + self.outlookers)
             print(i)
+        self.plotter.add_frame(self.iteration_number, self.employeed + self.outlookers)
             
     def explore(self):
         self.make_employee_bees_working()
@@ -85,14 +88,14 @@ class BeeOptimizer(Optimizer):
 
 #test
 fn = 'bee'
-o = Rastrigin()
+o = Rosenbrock()
 
-configuration_settings={'population_size': 20,
-                'iteration_number': 50,
+configuration_settings={'population_size': 100,
+                'iteration_number': 300,
                 'max_trials' : 5}
 
 configuration = list(configuration_settings.values())
-b=BeeOptimizer(o, configuration, fn)
+b=BeeOptimizer(o, configuration, fn, 10)
 
 b.initialize_swarm()
 b.release_the_swarm()
