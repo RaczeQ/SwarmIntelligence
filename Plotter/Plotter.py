@@ -45,6 +45,8 @@ class Plotter(object):
         plt.colorbar(pcolor, cax=self.cax)
         self.ax.plot(self.best_pos_x, self.best_pos_y, color='w', marker='+')
         self.ax.text(1, 1.01, f'Function: {self.func_name} [{self.best_pos_x}, {self.best_pos_y}]\nAlgorithm: {self.alg_name}', ha='right', transform=self.ax.transAxes)
+        
+        ensure_dir('results')
 
         # self.temp_directory_path = os.path.join('temp', datetime.now().strftime('%Y%m%d%H%M%S'))
         # ensure_dir(self.temp_directory_path)
@@ -52,10 +54,11 @@ class Plotter(object):
 
         self.frames = []
 
-    def add_frame(self, frame_no, entities, best_value=None):
+    def add_frame(self, frame_no, entities):
         objects = []
+        best_value = None
         best_entity = None
-        if best_value is None and len(entities) > 0:
+        if len(entities) > 0:
             best_value = entities[0].fitness
             for e in entities:
                 if self.factor > 0:
@@ -70,7 +73,7 @@ class Plotter(object):
         if best_value is not None:
             txt = self.ax.text(0, 1.01, f'Iteration: {frame_no:5d}\nBest value: {best_value:.3f}', transform=self.ax.transAxes)
         else:
-            txt = self.ax.text(0, 1.01, f'Rastrigin [{frame_no}]', transform=self.ax.transAxes)
+            txt = self.ax.text(0, 1.01, f'Iteration: {frame_no:5d}', transform=self.ax.transAxes)
         
         objects.append(txt)
 
@@ -90,6 +93,53 @@ class Plotter(object):
         for o in objects:
             o.remove()
 
+    def save_state_to_file(self, file_name, entities, line_history=False):
+        objects = []
+        best_value = None
+        best_entity = None
+        if len(entities) > 0:
+            best_value = entities[0].fitness
+            for e in entities:
+                if self.factor > 0:
+                    if e.fitness > best_value:
+                        best_value = e.fitness
+                        best_entity = e
+                else:
+                    if e.fitness < best_value:
+                        best_value = e.fitness
+                        best_entity = e
+
+        if best_value is not None:
+            txt = self.ax.text(0, 1.01, f'Best value: {best_value:.3f}', transform=self.ax.transAxes)
+        
+        objects.append(txt)
+
+        if line_history:
+            for idx, ent in enumerate(entities):
+                print(idx)
+                for i in range(len(ent.history_of_points)-1):
+                    x_1, y_1 = ent.history_of_points[i]
+                    x_2, y_2 = ent.history_of_points[i+1]
+                    line = self.ax.plot([x_1, x_2], [y_1, y_2], color='k', alpha=0.5)
+                    objects += line
+
+                x_1, y_1 = ent.history_of_points[-1]
+                x_2, y_2 = ent.x, ent.y
+                line = self.ax.plot([x_1, x_2], [y_1, y_2], color='k', alpha=0.5)
+                objects += line
+
+        for ent in entities:
+            pt = self.ax.plot(ent.x, ent.y, marker='o', color='k', markeredgewidth=1, markeredgecolor='w')
+            objects += pt
+        if best_entity is not None:
+            pt = self.ax.plot(best_entity.x, best_entity.y, marker='o', color='r', markeredgewidth=1, markeredgecolor='w')
+            objects += pt
+
+        plt.savefig(os.path.join('results', f'{file_name}.png'))
+
+        for o in objects:
+            o.remove()
+
     def duplicate_last_frame(self, copies):
         # path = os.path.join(self.temp_directory_path, f'{self.last_frame:06}.png')
         # for i in range(copies):
@@ -99,7 +149,6 @@ class Plotter(object):
             self.frames.append(self.frames[-1])
 
     def save_animation(self, file_name):
-        ensure_dir('results')
         file_path = os.path.join('results', f'{file_name}.gif')
         self.duplicate_last_frame(10)
         # clip = ImageSequenceClip(self.temp_directory_path, fps=5)
