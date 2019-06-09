@@ -129,7 +129,7 @@ class Plotter(object):
                 objects += line
 
         for ent in entities:
-            pt = self.ax.plot(ent.x, ent.y, marker='o', color='k', markeredgewidth=1, markeredgecolor='w')
+            pt = self.ax.plot(ent.x, ent.y, marker='o', color=ent.color, markeredgewidth=1, markeredgecolor=ent.edge_color)
             objects += pt
         if best_entity is not None:
             pt = self.ax.plot(best_entity.x, best_entity.y, marker='o', color='r', markeredgewidth=1, markeredgecolor='w')
