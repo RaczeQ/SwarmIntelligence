@@ -105,4 +105,4 @@ class Plotter(object):
         # clip = ImageSequenceClip(self.temp_directory_path, fps=5)
         clip = ImageSequenceClip(self.frames, fps=5)
         clip.write_gif(file_path)
-        shutil.rmtree(self.temp_directory_path)
+        # shutil.rmtree(self.temp_directory_path)
