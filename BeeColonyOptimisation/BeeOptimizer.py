@@ -97,16 +97,14 @@ x, y = o.best_pos
 best = o.evaluate(x, y)
 #5, 10, 15,
 population_size = [ 5, 10, 20, 30]
-iteration_num = [50] #[10,20,30,40,50,60,70,80,90,100]
 trials_num = [10,20,30] #[5,7,10,12,15,17,20,22,25,27,30]
 
 
 
 # for i in range(len(population_size)):
-#     for j in range(len(iteration_num)):
 #         for k in range(len(trials_num)):
 #             configuration_settings={'rozmiar populacji': population_size[i],
-#                             'liczba iteracji': iteration_num[j],
+#                             'liczba iteracji': 50,
 #                             'liczba prób' : trials_num[k],
 #                             'optimum globalne': best}
 

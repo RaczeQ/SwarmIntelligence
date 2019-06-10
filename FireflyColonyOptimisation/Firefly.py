@@ -20,7 +20,7 @@ class Firefly(Entity):
 
     def explore_neighborhood(self, neighborhood):
         for i in range(len(neighborhood)):
-            if(self.factor==1):
+            if(self.factor>1):
                 if(neighborhood[i].luminosity > self.luminosity):
                     self.move_forward(neighborhood[i])       
             else:
@@ -46,7 +46,7 @@ class Firefly(Entity):
     def update_position(self,  x, y):       
         try:
             new_luminosity =  self.evaluate_position(x, y) 
-            if(self.factor==1):
+            if(self.factor>1):
                 if(new_luminosity >= self.luminosity):
                     self.set_new_position(x,y)
                     self.luminosity = new_luminosity

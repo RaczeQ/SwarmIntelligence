@@ -14,7 +14,7 @@ class Analyzer():
         file_path = os.path.join('results', f'{result_file_name}.txt')
         return pd.read_csv(file_path, delimiter=',')
    
-    def visualize_bees_results(self, file_name, iter_num, optimum_type, title):
+    def visualize_bees_results(self, file_name, optimum_type, title):
         df = self.load_data(file_name)
 
         sns.set() 
@@ -25,12 +25,14 @@ class Analyzer():
         population_num = df['rozmiar populacji'].unique()
         trials=df['liczba prób'].unique()
         for j in range(len(population_num)):
-            for k in range(len(trials)):
-                if((trials[k]==10) | (trials[k]==20) | (trials[k]==30)):
-                    filtered = df[ (df['rozmiar populacji']==population_num[j]) & (df['liczba iteracji']==iter_num) & (df['liczba prób']==trials[k]) ]
-                    
-                    x_data = np.arange(1, len(filtered)+1, 1)
-                    plt.plot(x_data , filtered[optimum_type],  linewidth=1,  label='rozmiar populacji='+str(population_num[j])+', liczba prób='+ str(trials[k]))
+            for k in range(len(trials)):                      
+                filtered =  df[ (df['rozmiar populacji']==population_num[j])  & (df['liczba prób']==trials[k]) ]
+                grouped = filtered.groupby(['rozmiar populacji', 'liczba iteracji', 'weight', 'iter'])
+                x_data = np.arange(1, len(grouped)+1, 1)
+                y_data = grouped[optimum_type].mean()
+                plt.plot(x_data , y_data,  linewidth=1,  label='rozmiar populacji='+str(population_num[j])+', liczba prób='+ str(trials[k]))
+
+
 
         plt.axhline(y=df['optimum globalne'].iloc[0], color='r', linestyle='--', label='Optimum globalne')
         plt.xlabel ("Kroki iteracji")
@@ -41,7 +43,7 @@ class Analyzer():
         file_path = os.path.join('results', f'{file_name}+{optimum_type}.png')
         plt.savefig(file_path)
 
-    def visualize_pso_results(self, file_name, optimum_type,  title, iter_num):
+    def visualize_pso_results(self, file_name, optimum_type,  title):
         df = self.load_data(file_name)
 
         sns.set() 
@@ -73,9 +75,9 @@ class Analyzer():
 
 
 a = Analyzer()
-# a.visualize_bees_results('bee50_2', 50, 'najlepsze śledzone', 'Najlepsze znalezione optimum w danym kroku iteracji przez pszczołe zwiadowcę')
-# a.visualize_bees_results('bee50_2', 50, 'najlepsze znalezione', 'Najlepsze znalezione optimum w danym kroku iteracji przez pszczołe pracującą')
-a.visualize_pso_results('particle50', 'najlepsze śledzone', 'Najlepsze znalezione optimum w danym kroku iteracji', 2)
-a.visualize_pso_results('particle50', 'najlepsze znalezione', 'Najlepsze znalezione dotychczas optimum w danym kroku iteracji', 2)
+# a.visualize_bees_results('bee50_2',  'najlepsze śledzone', 'Najlepsze znalezione optimum w danym kroku iteracji przez pszczołe zwiadowcę')
+# a.visualize_bees_results('bee50_2', 'najlepsze znalezione', 'Najlepsze znalezione optimum w danym kroku iteracji przez pszczołe pracującą')
+a.visualize_pso_results('particle50', 'najlepsze śledzone', 'Najlepsze znalezione optimum w danym kroku iteracji')
+a.visualize_pso_results('particle50', 'najlepsze znalezione', 'Najlepsze znalezione dotychczas optimum w danym kroku iteracji')
 
 
