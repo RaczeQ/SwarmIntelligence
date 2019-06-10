@@ -6,7 +6,7 @@ from ParticleSwarmOptimisation.Particle import Particle
 from ObjectiveFunction.Rastrigin import Rastrigin
 from Plotter import Plotter
 import logging
-
+import numpy as np
 class ParticleSwarmOptimizer(Optimizer):
 
     def __init__(self, objective_function, configuration, result_file_name):
@@ -28,15 +28,18 @@ class ParticleSwarmOptimizer(Optimizer):
             self.find_g_best()
             self.explore()
             self.update_optimal_solution_tracking()
-            self.plotter.add_frame(i, self.particles)
+           # self.plotter.add_frame(i, self.particles)
             print(i)
             
     def find_g_best(self):
         if self.factor > 0:
-            max_prob = max(e.fitness for e in self.particles)
+            fitness = max(e.p_best_fitness for e in self.particles)
         else:
-            max_prob = min(e.fitness for e in self.particles)
-        self.g_best_particle = list(filter(lambda b: b.fitness == max_prob, self.particles))
+            fitness = min(e.p_best_fitness for e in self.particles)
+        print('the best fit ===================> '+str(fitness))
+        self.g_best_particle = list(filter(lambda b: b.p_best_fitness == fitness, self.particles))
+        self.optimal_solution.append(fitness)
+
         
     def explore(self):
         for i in range(len(self.particles)):
@@ -49,28 +52,41 @@ class ParticleSwarmOptimizer(Optimizer):
         if self.factor > 0:
             fitness =  max(e.fitness for e in self.particles) 
         else:
-            fitness =  min(e.fitness for e in self.particles) 
+            fitness =  min(e.fitness for e in self.particles)     
         self.optimal_tracing.append(fitness)
 
     def save_state(self, file_name, line_history):
         self.plotter.save_state_to_file(file_name, self.particles, line_history)
 
 #test
-fn = 'particle'
+fn = 'particle50'
 o = Rastrigin()
 
-configuration_settings={'population_size': 10,
-                'iteration_number': 50,
-                'weight' : 0.6,
-                'c1': 0.6,
-                'c2': 0.2}
+c1 = [0.5, 1, 1.4]
+c2 =  [0.5, 1, 1.4]
+w = [2,3,4,5]
+x, y = o.best_pos
+best = o.evaluate(x, y)
 
-configuration = list(configuration_settings.values())
-b=ParticleSwarmOptimizer(o, configuration, fn)
+for i in range(5):
+    for i in range(len(c1)):
+        for j in range(len(c2)):
+            if(c1[i] == c2[j]):
+                for k in range(len(w)):
+                    configuration_settings={'population_size': 120,
+                                    'iteration_number': 50,
+                                    'weight' : w[k],
+                                    'c1': c1[i],
+                                    'c2': c2[j],
+                                    'optimum globalne': best}
 
-b.initialize_swarm()
-b.release_the_swarm()
-b.save_optimal_tracing(configuration_settings)
-b.save_animation('pso')
-b.save_state('pso_hist', False)
+                    configuration = list(configuration_settings.values())
+                    b=ParticleSwarmOptimizer(o, configuration, fn)
+
+                    b.initialize_swarm()
+                    b.release_the_swarm()
+                    b.save_optimal_tracing(configuration_settings)
+
+# b.save_animation('pso')
+# b.save_state('pso_hist', False)
 # False - historia nie wygląda zbyt ładnie jeszcze

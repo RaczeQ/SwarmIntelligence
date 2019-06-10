@@ -27,32 +27,35 @@ class FireflyOptimizer(Optimizer):
             for i in range(self.population_size):
                 for j in range(i):
                     if(i!=j):
-                        print("j "+str(j))
-                        print(self.firefly[:j])
                         self.firefly[i].explore_neighborhood(self.firefly[:j])
                     else:
                         self.firefly[i].move_firefly()
             self.update_optimal_solution_tracking()
 
     def update_optimal_solution_tracking(self):
-        if(self.factor == 1):
+        if(self.factor> 0 ):
             luminosity =  max(e.luminosity for e in self.firefly) 
         else:
             luminosity =  min(e.luminosity for e in self.firefly) 
-        self.optimal_tracing.append(luminosity)        
+        self.optimal_tracing.append(luminosity)   
+        self.optimal_solution.append(luminosity)     
             
 #test
 fn = 'firefly'
 o = Rastrigin()
 
-configuration_settings={'population_size': 5,
-                'iteration_number': 10,
-                'max_beta' : 0.7,
-                'absorption_coefficient': 0.3}
+max_beta=[0.2, 0.3]
+absorption_coefficient = [0.2, 0.3]
 
-configuration = list(configuration_settings.values())
-b=FireflyOptimizer(o, configuration, fn, -1)
+for i in range(len(max_beta)):
+    for j in range(len(absorption_coefficient)):
+        configuration_settings={'population_size': 100,
+                        'iteration_number': 50,
+                        'max_beta' : 0.7,
+                        'absorption_coefficient': 0.3}
+        configuration = list(configuration_settings.values())
+        b=FireflyOptimizer(o, configuration, fn, -1)
 
-b.initialize_swarm()
-b.release_the_swarm()
-b.save_optimal_tracing(configuration_settings)
+        b.initialize_swarm()
+        b.release_the_swarm()
+        b.save_optimal_tracing(configuration_settings)
