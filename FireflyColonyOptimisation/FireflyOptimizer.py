@@ -1,7 +1,7 @@
 import sys
 sys.path.insert(1, '.')
+
 from Optimisation.Optimizer import Optimizer
-from ParticleSwarmOptimisation.Particle import Particle
 from FireflyColonyOptimisation.Firefly import Firefly
 from ObjectiveFunction.Rastrigin import Rastrigin
 
@@ -9,12 +9,11 @@ import logging
 
 class FireflyOptimizer(Optimizer):
 
-    def __init__(self, objective_function, configuration, result_file_name, factor):
-        super().__init__(objective_function, configuration[0], configuration[1], result_file_name, factor)
+    def __init__(self, objective_function, configuration, result_file_name):
+        super().__init__(objective_function, configuration[0], configuration[1], result_file_name)
         self.max_beta = configuration[2]
         self.absorption_coefficient = configuration[3]
         self.result_file_name = result_file_name
-        self.factor = factor
        
     def initialize_swarm(self):
         self.initialize_particles()
@@ -39,9 +38,10 @@ class FireflyOptimizer(Optimizer):
             luminosity =  min(e.luminosity for e in self.firefly) 
         self.optimal_tracing.append(luminosity)   
         self.optimal_solution.append(luminosity)     
+        print('the best luminosity ===================> '+ str(luminosity))
             
 #test
-fn = 'firefly'
+fn = 'firefly50'
 o = Rastrigin()
 
 max_beta=[0.2, 0.3]
@@ -49,12 +49,12 @@ absorption_coefficient = [0.2, 0.3]
 
 for i in range(len(max_beta)):
     for j in range(len(absorption_coefficient)):
-        configuration_settings={'population_size': 100,
+        configuration_settings={'population_size': 50,
                         'iteration_number': 50,
                         'max_beta' : 0.7,
                         'absorption_coefficient': 0.3}
         configuration = list(configuration_settings.values())
-        b=FireflyOptimizer(o, configuration, fn, -1)
+        b=FireflyOptimizer(o, configuration, fn)
 
         b.initialize_swarm()
         b.release_the_swarm()
