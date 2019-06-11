@@ -4,7 +4,7 @@ sys.path.insert(1, '.')
 from Optimisation.Optimizer import Optimizer
 from EmployeeBee import EmployeeBee
 from OnLookerBee import OnLookerBee
-from ObjectiveFunction import Rastrigin, Bukin6, Rosenbrock
+from ObjectiveFunction import Ackley, Rastrigin, Bukin6, Rosenbrock, Trid
 import numpy as np
 import logging
 from Plotter import Plotter
@@ -64,10 +64,13 @@ class BeeOptimizer(Optimizer):
 
     def update_optimal_solution_tracking(self):
         if(self.factor == 1):
-            fitness =  max(e.fitness for e in self.outlookers) 
+            outlooker_fitness =  max(e.fitness for e in self.outlookers) 
+            employee_fitness = max(e.fitness for e in self.employeed) 
         else:
-            fitness =  min(e.fitness for e in self.outlookers) 
-        self.optimal_tracing.append(fitness)
+            outlooker_fitness =  min(e.fitness for e in self.outlookers) 
+            employee_fitness =  min(e.fitness for e in self.employeed) 
+        self.optimal_tracing.append(outlooker_fitness)
+        self.optimal_solution.append(employee_fitness)
 
     def make_employee_bees_working(self):
         neighborhood = self.get_neighborhood_positions()
@@ -87,22 +90,61 @@ class BeeOptimizer(Optimizer):
         self.plotter.save_state_to_file(file_name, self.employeed + self.outlookers, line_history)
 
 #test
-fn = 'bee'
-o = Rosenbrock()
 
-configuration_settings={'population_size': 100,
-                'iteration_number': 300,
-                'max_trials' : 5}
+# fn = 'bee'
+# o = Rosenbrock()
 
-configuration = list(configuration_settings.values())
-b=BeeOptimizer(o, configuration, fn, 10)
+# configuration_settings={'population_size': 100,
+#                 'iteration_number': 300,
+#                 'max_trials' : 5}
 
-b.initialize_swarm()
-b.release_the_swarm()
-b.save_optimal_tracing(configuration_settings)
-b.save_animation('bees')
-b.save_state('bees_hist', False)
+# configuration = list(configuration_settings.values())
+# b=BeeOptimizer(o, configuration, fn, 10)
+
+fn = 'bee50_2'
+o = Rastrigin()
+x, y = o.best_pos
+best = o.evaluate(x, y)
+#5, 10, 15,
+population_size = [ 5, 10, 20, 30]
+trials_num = [10,20,30] #[5,7,10,12,15,17,20,22,25,27,30]
+
+
+# for i in range(len(population_size)):
+#         for k in range(len(trials_num)):
+#             configuration_settings={'rozmiar populacji': population_size[i],
+#                             'liczba iteracji': 50,
+#                             'liczba prób' : trials_num[k],
+#                             'optimum globalne': best}
+
+#             configuration = list(configuration_settings.values())
+#             b=BeeOptimizer(o, configuration, fn)
+
+#             b.initialize_swarm()
+#             b.release_the_swarm()
+#             b.save_optimal_tracing(configuration_settings)
+
+#b.save_animation('bees')
+#b.save_state('bees_hist', False)
 # False - historia nie wygląda zbyt ładnie jeszcze
 
-# 3 parametry: P - liczba źródeł ( populacja) , M - liczba prób tetsowych po których źródło jest wyczerpane, Cmax - maksymalna liczba cykli wykonania algorytmu
+
+fn = 'bee50_goal'
+goal = [Rastrigin(), Ackley(), Bukin6(), Rosenbrock(), Trid]
+for i in range(len(goal)):
+    o= goal[i]
+    x, y = o.best_pos
+    best = o.evaluate(x, y)
+    configuration_settings={'rozmiar populacji': 30,
+                            'liczba iteracji': 50,
+                            'liczba prób' : 30,
+                            'optimum globalne': best,
+                            'funkcja oceny': o.__class__.__name__}
+
+    configuration = list(configuration_settings.values())
+    b=BeeOptimizer(o, configuration, fn)
+
+    b.initialize_swarm()
+    b.release_the_swarm()
+    b.save_optimal_tracing(configuration_settings)
 

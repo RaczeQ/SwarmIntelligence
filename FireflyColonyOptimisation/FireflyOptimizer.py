@@ -1,7 +1,7 @@
 import sys
 sys.path.insert(1, '.')
+
 from Optimisation.Optimizer import Optimizer
-from ParticleSwarmOptimisation.Particle import Particle
 from FireflyColonyOptimisation.Firefly import Firefly
 from ObjectiveFunction.Rastrigin import Rastrigin
 from Plotter import Plotter
@@ -30,8 +30,6 @@ class FireflyOptimizer(Optimizer):
             for i in range(self.population_size):
                 for j in range(i):
                     if(i!=j):
-                        # print("j "+str(j))
-                        # print(self.fireflies[:j])
                         self.fireflies[i].explore_neighborhood(self.fireflies[:j])
                     else:
                         self.fireflies[i].move_fireflies()
@@ -46,25 +44,47 @@ class FireflyOptimizer(Optimizer):
             luminosity =  max(e.luminosity for e in self.fireflies) 
         else:
             luminosity =  min(e.luminosity for e in self.fireflies) 
-        self.optimal_tracing.append(luminosity)        
+        self.optimal_tracing.append(luminosity)   
+        self.optimal_solution.append(luminosity)     
+        print('the best luminosity ===================> '+ str(luminosity))       
     
     def save_state(self, file_name, line_history):
         self.plotter.save_state_to_file(file_name, self.fireflies, line_history)
             
+# #test
+# fn = 'fireflies'
+# o = Rastrigin()
+
+# configuration_settings={'population_size': 20,
+#                 'iteration_number': 100,
+#                 'max_beta' : 0.7,
+#                 'absorption_coefficient': 0.3}
+
+# configuration = list(configuration_settings.values())
+# b=FireflyOptimizer(o, configuration, fn, 5)
+
+# b.initialize_swarm()
+# b.release_the_swarm()
+# b.save_optimal_tracing(configuration_settings)
+# b.save_animation('fireflies')
+# b.save_state('fireflies_hist', False)
+            
 #test
-fn = 'fireflies'
+fn = 'firefly50'
 o = Rastrigin()
 
-configuration_settings={'population_size': 20,
-                'iteration_number': 100,
-                'max_beta' : 0.7,
-                'absorption_coefficient': 0.3}
+max_beta=[0.2, 0.3]
+absorption_coefficient = [0.2, 0.3]
 
-configuration = list(configuration_settings.values())
-b=FireflyOptimizer(o, configuration, fn, 5)
+for i in range(len(max_beta)):
+    for j in range(len(absorption_coefficient)):
+        configuration_settings={'population_size': 50,
+                        'iteration_number': 50,
+                        'max_beta' : 0.7,
+                        'absorption_coefficient': 0.3}
+        configuration = list(configuration_settings.values())
+        b=FireflyOptimizer(o, configuration, fn)
 
-b.initialize_swarm()
-b.release_the_swarm()
-b.save_optimal_tracing(configuration_settings)
-b.save_animation('fireflies')
-b.save_state('fireflies_hist', False)
+        b.initialize_swarm()
+        b.release_the_swarm()
+        b.save_optimal_tracing(configuration_settings)
