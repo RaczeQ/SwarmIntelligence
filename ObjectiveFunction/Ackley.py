@@ -13,6 +13,7 @@ class Ackley(ObjectiveFunction):
         super().__init__(x_min, x_max, y_min, y_max, (0,0), -1)
     
     def evaluate(self, x, y):
+        self.assert_boundaries(x, y)
         val = -self.a*np.exp(-self.b*np.sqrt(0.5*(x**2 + y**2))) - np.exp(0.5*(np.cos(self.c*x) + np.cos(self.c*y))) + self.a + np.exp(1.0)
         return val
     

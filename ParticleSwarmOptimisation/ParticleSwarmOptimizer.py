@@ -9,12 +9,13 @@ import logging
 import numpy as np
 class ParticleSwarmOptimizer(Optimizer):
 
-    def __init__(self, objective_function, configuration, result_file_name):
+    def __init__(self, objective_function, configuration, result_file_name, skip_frames=0):
         super().__init__(objective_function, configuration[0], configuration[1], result_file_name)
         self.g_best_particle = None
         self.weight = configuration[2]
         self.c1 = configuration[3]
         self.c2 = configuration[4]
+        self.skip_frames = skip_frames
         self.plotter = Plotter(objective_function, 'PSO')
 
     def initialize_swarm(self):
@@ -28,8 +29,10 @@ class ParticleSwarmOptimizer(Optimizer):
             self.find_g_best()
             self.explore()
             self.update_optimal_solution_tracking()
-           # self.plotter.add_frame(i, self.particles)
+            if self.skip_frames == 0 or i % self.skip_frames == 0:
+                self.plotter.add_frame(i, self.particles)
             print(i)
+        self.plotter.add_frame(self.iteration_number, self.particles)
             
     def find_g_best(self):
         if self.factor > 0:
@@ -61,6 +64,15 @@ class ParticleSwarmOptimizer(Optimizer):
 #test
 fn = 'particle50'
 o = Rastrigin()
+
+# configuration_settings={'population_size': 100,
+#                 'iteration_number': 200,
+#                 'weight' : 0.6,
+#                 'c1': 0.6,
+#                 'c2': 0.2}
+
+# configuration = list(configuration_settings.values())
+# b=ParticleSwarmOptimizer(o, configuration, fn, 10)
 
 c1 = [0.5, 1, 1.4]
 c2 =  [0.5, 1, 1.4]
