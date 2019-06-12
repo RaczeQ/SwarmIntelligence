@@ -3,19 +3,23 @@ sys.path.insert(1, '.')
 
 from Optimisation.Optimizer import Optimizer
 from ParticleSwarmOptimisation.Particle import Particle
-from ObjectiveFunction.Rastrigin import Rastrigin
+from ObjectiveFunction import ALL_FUNCTIONS
 from Plotter import Plotter
 import logging
 import numpy as np
+import pandas as pd
 class ParticleSwarmOptimizer(Optimizer):
 
-    def __init__(self, objective_function, configuration, result_file_name):
+    def __init__(self, objective_function, configuration, result_file_name, skip_frames=0, plot=True):
         super().__init__(objective_function, configuration[0], configuration[1], result_file_name)
         self.g_best_particle = None
         self.weight = configuration[2]
         self.c1 = configuration[3]
         self.c2 = configuration[4]
-        self.plotter = Plotter(objective_function, 'PSO')
+        self.skip_frames = skip_frames
+        self.plot = plot
+        if self.plot:
+            self.plotter = Plotter(objective_function, 'PSO')
 
     def initialize_swarm(self):
         self.initialize_particles()
@@ -24,19 +28,26 @@ class ParticleSwarmOptimizer(Optimizer):
         self.particles = [Particle(self.objective_function, self.weight, self.c1, self.c2) for i in range(int(self.population_size))]
 
     def release_the_swarm(self):
+        for p in self.particles:
+            p.save_to_history()
         for i in range(self.iteration_number):
             self.find_g_best()
             self.explore()
             self.update_optimal_solution_tracking()
-           # self.plotter.add_frame(i, self.particles)
-            print(i)
+            if self.plot and (self.skip_frames == 0 or i % self.skip_frames == 0):
+                self.plotter.add_frame(i, self.particles)
+            # print(i)
+            for p in self.particles:
+                p.save_to_history()
+        if self.plot:
+            self.plotter.add_frame(self.iteration_number, self.particles)
             
     def find_g_best(self):
         if self.factor > 0:
             fitness = max(e.p_best_fitness for e in self.particles)
         else:
             fitness = min(e.p_best_fitness for e in self.particles)
-        print('the best fit ===================> '+str(fitness))
+        # print('the best fit ===================> '+str(fitness))
         self.g_best_particle = list(filter(lambda b: b.p_best_fitness == fitness, self.particles))
         self.optimal_solution.append(fitness)
 
@@ -46,7 +57,8 @@ class ParticleSwarmOptimizer(Optimizer):
             try:
                 self.particles[i].explore_neighborhood(self.g_best_particle)
             except AssertionError:
-                logging.error("The particle was trying to escape outside the boundaries!")
+                pass
+                # logging.error("The particle was trying to escape outside the boundaries!")
 
     def update_optimal_solution_tracking(self):
         if self.factor > 0:
@@ -56,36 +68,54 @@ class ParticleSwarmOptimizer(Optimizer):
         self.optimal_tracing.append(fitness)
 
     def save_state(self, file_name, line_history):
+        assert self.plot
         self.plotter.save_state_to_file(file_name, self.particles, line_history)
 
 #test
-fn = 'particle50'
-o = Rastrigin()
 
-c1 = [0.5, 1, 1.4]
-c2 =  [0.5, 1, 1.4]
-w = [2,3,4,5]
-x, y = o.best_pos
-best = o.evaluate(x, y)
+# o = Rastrigin()
 
-for i in range(5):
-    for i in range(len(c1)):
-        for j in range(len(c2)):
-            if(c1[i] == c2[j]):
-                for k in range(len(w)):
-                    configuration_settings={'population_size': 120,
-                                    'iteration_number': 50,
-                                    'weight' : w[k],
-                                    'c1': c1[i],
-                                    'c2': c2[j],
-                                    'optimum globalne': best}
+# configuration_settings={'population_size': 100,
+#                 'iteration_number': 200,
+#                 'weight' : 0.6,
+#                 'c1': 0.6,
+#                 'c2': 0.2}
 
+# configuration = list(configuration_settings.values())
+# b=ParticleSwarmOptimizer(o, configuration, fn, 10)
+
+c1_list = np.arange(0.5, 4.5, 0.5)
+c2_list =  np.arange(0.5, 4.5, 0.5)
+w_list = np.arange(1, 6, 1)
+
+
+for func in ALL_FUNCTIONS:
+    fn = f'pso_200_{func.__name__}'
+    f = func()
+    x, y = f.best_pos
+    best = f.evaluate(x, y)
+    values = []
+    for c1 in c1_list:
+        # for c2 in c2_list:
+        for c2 in [c1]:
+            for w in w_list:
+                configuration_settings={'population_size': 100,
+                                        'iteration_number': 50,
+                                        'weight' : w,
+                                        'c1': c1,
+                                        'c2': c2,
+                                        'optimum globalne': best,
+                                        'function': func.__name__}
+                for i in range(10):
+                    print(c1, c2, w, i)
                     configuration = list(configuration_settings.values())
-                    b=ParticleSwarmOptimizer(o, configuration, fn)
-
+                    b=ParticleSwarmOptimizer(f, configuration, fn, plot=False)
                     b.initialize_swarm()
                     b.release_the_swarm()
-                    b.save_optimal_tracing(configuration_settings)
+                    row = b.save_optimal_tracing(configuration_settings)
+                    values.append(row)
+    df = pd.concat(values, axis=0, ignore_index=True) 
+    df.to_csv(fn)
 
 # b.save_animation('pso')
 # b.save_state('pso_hist', False)

@@ -10,6 +10,7 @@ class Trid(ObjectiveFunction):
         super().__init__(x_min, x_max, y_min, y_max, (2,2), -1)
     
     def evaluate(self, x, y):
+        self.assert_boundaries(x, y)
         val = (x-1)**2 + (y-1)**2 - x*y
         return val
     

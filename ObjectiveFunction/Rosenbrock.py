@@ -12,6 +12,7 @@ class Rosenbrock(ObjectiveFunction):
         super().__init__(x_min, x_max, y_min, y_max, (self.a, self.a**2), -1)
     
     def evaluate(self, x, y):
+        self.assert_boundaries(x, y)
         val = (self.a - x)**2 + self.b*(y - x**2)**2
         return val
     

@@ -5,9 +5,11 @@ class Entity(object):
     color = None
     history_of_points = []
 
-    def __init__(self, objective_function):
+    def __init__(self, objective_function, color='k', edge_color='w'):
         self.objective_function = objective_function
         self.factor = objective_function.factor
+        self.color = color
+        self.edge_color = edge_color
 
     def set_entity_initial_parameters(self):
         self.x, self.y = self.objective_function.sample_position()
@@ -15,9 +17,11 @@ class Entity(object):
         self.trial = 0
 
     def set_new_position(self, x, y):
-        self.history_of_points.append((self.x, self.y))
         self.x = x
         self.y = y
+
+    def save_to_history(self):
+        self.history_of_points.append((self.x, self.y))
 
     def evaluate_position(self, x, y):
         return self.objective_function.evaluate(x, y)

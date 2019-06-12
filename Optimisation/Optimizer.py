@@ -37,20 +37,23 @@ class Optimizer():
         keys.append('iter')
         v = np.repeat(np.reshape(np.asarray(values), (-1, 1)).T, len(self.optimal_tracing), axis = 0)
         t = np.reshape(np.asarray(self.optimal_tracing), (-1, 1))
-        s =np.reshape(np.asarray(self.optimal_solution), (-1, 1))
+        s = np.reshape(np.asarray(self.optimal_solution), (-1, 1))
         result = np.concatenate((v, t), axis=1)
         result = np.concatenate((result, s), axis=1)
         iteration_n = configuration.get('iteration_number')
         iter_n = np.reshape(np.arange(0, iteration_n), (-1, 1))
         result = np.concatenate((result, iter_n), axis=1 )
-        df = pd.DataFrame()
-        try:
-            df = pd.read_csv(file_path, index_col=0) 
-        except:
-            df = pd.DataFrame(columns=keys)
-        row =pd.DataFrame( result, columns=keys)
-        df = pd.concat ([df, row], axis=0, ignore_index=True) 
-        df.to_csv(file_path)
+        row = pd.DataFrame( result, columns=keys)
+        return row
+        # df = pd.DataFrame()
+        # try:
+        #     df = pd.read_csv(file_path, index_col=0) 
+        # except:
+        #     df = pd.DataFrame(columns=keys)
+        # row = pd.DataFrame( result, columns=keys)
+        # df = pd.concat ([df, row], axis=0, ignore_index=True) 
+        # df.to_csv(file_path)
 
     def save_animation(self, file_name):
+        assert self.plot
         self.plotter.save_animation(file_name)

@@ -5,13 +5,13 @@ import numpy as np
 from .ObjectiveFunction import ObjectiveFunction
 
 
-class Bukin6(ObjectiveFunction):
-    def __init__(self, x_min=-15, x_max=5, y_min=-3, y_max=3):
-        super().__init__(x_min, x_max, y_min, y_max, (-10, 1), -1)
+class Sphere(ObjectiveFunction):
+    def __init__(self, x_min=-5, x_max=5, y_min=-5, y_max=5):
+        super().__init__(x_min, x_max, y_min, y_max, (0,0), -1)
     
     def evaluate(self, x, y):
         self.assert_boundaries(x, y)
-        val = 100 * np.sqrt(np.abs(y - 0.01 * x ** 2)) + 0.01 + np.abs(x + 10)
+        val = x**2 + y**2
         return val
     
     def sample_position(self):

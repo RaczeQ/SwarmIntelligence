@@ -4,11 +4,7 @@ sys.path.insert(1, '.')
 from Optimisation.Optimizer import Optimizer
 from EmployeeBee import EmployeeBee
 from OnLookerBee import OnLookerBee
-from ObjectiveFunction.Rastrigin import Rastrigin
-from ObjectiveFunction.Ackley import  Ackley
-from ObjectiveFunction.Rosenbrock import  Rosenbrock
-from ObjectiveFunction.Trid import  Trid
-from ObjectiveFunction.Bukin6 import  Bukin6
+from ObjectiveFunction import Ackley, Rastrigin, Bukin6, Rosenbrock, Trid
 import numpy as np
 import logging
 from Plotter import Plotter
@@ -16,10 +12,13 @@ from Plotter import Plotter
 
 class BeeOptimizer(Optimizer):
 
-    def __init__(self, objective_function, configuration, result_file_name):
+    def __init__(self, objective_function, configuration, result_file_name, skip_frames=0, plot=True):
         super().__init__(objective_function, configuration[0], configuration[1] ,result_file_name)
         self.max_trials = configuration[2]
-        self.plotter = Plotter(objective_function, 'Bees')
+        self.skip_frames = skip_frames
+        self.plot = plot
+        if self.plot:
+            self.plotter = Plotter(objective_function, 'Bees')
 
     def initialize_swarm(self):
         self.initialize_population()
@@ -35,14 +34,26 @@ class BeeOptimizer(Optimizer):
         self.outlookers = [OnLookerBee(self.objective_function) for  i in range(int(self.population_size/2))]
 
     def release_the_swarm(self):
+        for b in self.employeed + self.outlookers:
+            b.save_to_history()
         for i in range(self.iteration_number):
             self.explore()
             self.calculate_probabilities()
             self.find_best_bees()
             self.onlook()
             self.update_optimal_solution_tracking()
+<<<<<<< HEAD
             #self.plotter.add_frame(i, self.employeed + self.outlookers)
             print(i)
+=======
+            if self.plot and (self.skip_frames == 0 or i % self.skip_frames == 0):
+                self.plotter.add_frame(i, self.employeed + self.outlookers)
+            # print(i)
+            for b in self.employeed + self.outlookers:
+                b.save_to_history()
+        if self.plot:
+            self.plotter.add_frame(self.iteration_number, self.employeed + self.outlookers)
+>>>>>>> 74c760c2310adfa0e78a35b37f94f85b43b2e57a
             
     def explore(self):
         self.make_employee_bees_working()
@@ -88,10 +99,26 @@ class BeeOptimizer(Optimizer):
             self.outlookers[i].onlook(self.best_bees, self.max_trials)
 
     def save_state(self, file_name, line_history):
+        assert self.plot
         self.plotter.save_state_to_file(file_name, self.employeed + self.outlookers, line_history)
 
 #test
+<<<<<<< HEAD
 fn = 'bee50_3'
+=======
+
+# fn = 'bee'
+# o = Rosenbrock()
+
+# configuration_settings={'population_size': 100,
+#                 'iteration_number': 300,
+#                 'max_trials' : 5}
+
+# configuration = list(configuration_settings.values())
+# b=BeeOptimizer(o, configuration, fn, 10)
+
+fn = 'bee50_2'
+>>>>>>> 74c760c2310adfa0e78a35b37f94f85b43b2e57a
 o = Rastrigin()
 x, y = o.best_pos
 best = o.evaluate(x, y)
@@ -100,6 +127,7 @@ population_size = [10, 30, 50, 70, 100]
 trials_num = [10,20,30] #[5,7,10,12,15,17,20,22,25,27,30]
 
 
+<<<<<<< HEAD
 for l in range(10):
     for i in range(len(population_size)):
             for k in range(len(trials_num)):
@@ -110,6 +138,17 @@ for l in range(10):
 
                 configuration = list(configuration_settings.values())
                 b=BeeOptimizer(o, configuration, fn)
+=======
+# for i in range(len(population_size)):
+#         for k in range(len(trials_num)):
+#             configuration_settings={'rozmiar populacji': population_size[i],
+#                             'liczba iteracji': 50,
+#                             'liczba prób' : trials_num[k],
+#                             'optimum globalne': best}
+
+#             configuration = list(configuration_settings.values())
+#             b=BeeOptimizer(o, configuration, fn)
+>>>>>>> 74c760c2310adfa0e78a35b37f94f85b43b2e57a
 
                 b.initialize_swarm()
                 b.release_the_swarm()

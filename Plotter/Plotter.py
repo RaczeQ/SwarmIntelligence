@@ -19,7 +19,7 @@ def ensure_dir(directory):
         os.makedirs(directory)
 
 class Plotter(object):
-    def __init__(self, obj_function, algorithm_name, resolution=400, colormap=matplotlib.cm.RdYlGn):
+    def __init__(self, obj_function, algorithm_name, resolution=1000, colormap=matplotlib.cm.RdYlGn):
         self.func_name = obj_function.__class__.__name__
         self.alg_name = algorithm_name
         self.factor = obj_function.factor
@@ -78,7 +78,7 @@ class Plotter(object):
         objects.append(txt)
 
         for ent in entities:
-            pt = self.ax.plot(ent.x, ent.y, marker='o', color='k', markeredgewidth=1, markeredgecolor='w')
+            pt = self.ax.plot(ent.x, ent.y, marker='o', color=ent.color, markeredgewidth=1, markeredgecolor=ent.edge_color)
             objects += pt
         if best_entity is not None:
             pt = self.ax.plot(best_entity.x, best_entity.y, marker='o', color='r', markeredgewidth=1, markeredgecolor='w')
@@ -111,8 +111,7 @@ class Plotter(object):
 
         if best_value is not None:
             txt = self.ax.text(0, 1.01, f'Best value: {best_value:.3f}', transform=self.ax.transAxes)
-        
-        objects.append(txt)
+            objects.append(txt)
 
         if line_history:
             for idx, ent in enumerate(entities):
@@ -129,7 +128,7 @@ class Plotter(object):
                 objects += line
 
         for ent in entities:
-            pt = self.ax.plot(ent.x, ent.y, marker='o', color='k', markeredgewidth=1, markeredgecolor='w')
+            pt = self.ax.plot(ent.x, ent.y, marker='o', color=ent.color, markeredgewidth=1, markeredgecolor=ent.edge_color)
             objects += pt
         if best_entity is not None:
             pt = self.ax.plot(best_entity.x, best_entity.y, marker='o', color='r', markeredgewidth=1, markeredgecolor='w')

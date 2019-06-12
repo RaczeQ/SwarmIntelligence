@@ -9,8 +9,8 @@ class Bee(Entity):
 
     INITIAL_PROBABILITY=0.0
 
-    def __init__(self, objective_function):     
-        super().__init__(objective_function)
+    def __init__(self, objective_function, color, edge_color):     
+        super().__init__(objective_function, color, edge_color)
         self.set_entity_initial_parameters()
             
     def set_entity_initial_parameters(self):

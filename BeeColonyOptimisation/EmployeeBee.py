@@ -3,7 +3,7 @@ import random
 class EmployeeBee(Bee):
     
     def __init__(self, objective_function, max_trials):
-        super().__init__(objective_function)
+        super().__init__(objective_function, 'y', 'k')
         self.max_trials = max_trials
 
 
