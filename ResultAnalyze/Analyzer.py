@@ -71,7 +71,6 @@ class Analyzer():
         plt.savefig(file_path)
 
 
-<<<<<<< HEAD
     def visualize_firefly_results(self, file_name, optimum_type,  title):
             df = self.load_data(file_name)
             sns.set() 
@@ -96,18 +95,10 @@ class Analyzer():
 
             file_path = os.path.join('results', f'{file_name}+{optimum_type}.png')
             plt.savefig(file_path)
-=======
+
 a = Analyzer()
 # a.visualize_bees_results('bee50_2',  'najlepsze śledzone', 'Najlepsze znalezione optimum w danym kroku iteracji przez pszczołe zwiadowcę')
 # a.visualize_bees_results('bee50_2', 'najlepsze znalezione', 'Najlepsze znalezione optimum w danym kroku iteracji przez pszczołe pracującą')
 a.visualize_pso_results('pso_200_Ackley', 'najlepsze śledzone', 'Najlepsze znalezione optimum w danym kroku iteracji')
 a.visualize_pso_results('pso_200_Ackley', 'najlepsze znalezione', 'Najlepsze znalezione dotychczas optimum w danym kroku iteracji')
->>>>>>> 74c760c2310adfa0e78a35b37f94f85b43b2e57a
-
-
-a = Analyzer()
-# a.visualize_bees_results('bee50_2',  'najlepsze śledzone', 'Najlepsze znalezione optimum w danym kroku iteracji przez pszczołe zwiadowcę')
-# # a.visualize_bees_results('bee50_2', 'najlepsze znalezione', 'Najlepsze znalezione optimum w danym kroku iteracji przez pszczołe pracującą')
-# a.visualize_pso_results('particle50', 'najlepsze śledzone', 'Najlepsze znalezione optimum w danym kroku iteracji')
-# a.visualize_pso_results('particle50', 'najlepsze znalezione', 'Najlepsze znalezione dotychczas optimum w danym kroku iteracji')
 a.visualize_firefly_results('firefly50', 'najlepsze znalezione', 'Najlepsze znalezione dotychczas optimum w danym kroku iteracji')

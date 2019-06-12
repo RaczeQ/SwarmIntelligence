@@ -42,10 +42,10 @@ class BeeOptimizer(Optimizer):
             self.find_best_bees()
             self.onlook()
             self.update_optimal_solution_tracking()
-<<<<<<< HEAD
+
             #self.plotter.add_frame(i, self.employeed + self.outlookers)
             print(i)
-=======
+
             if self.plot and (self.skip_frames == 0 or i % self.skip_frames == 0):
                 self.plotter.add_frame(i, self.employeed + self.outlookers)
             # print(i)
@@ -53,7 +53,7 @@ class BeeOptimizer(Optimizer):
                 b.save_to_history()
         if self.plot:
             self.plotter.add_frame(self.iteration_number, self.employeed + self.outlookers)
->>>>>>> 74c760c2310adfa0e78a35b37f94f85b43b2e57a
+
             
     def explore(self):
         self.make_employee_bees_working()
@@ -103,9 +103,7 @@ class BeeOptimizer(Optimizer):
         self.plotter.save_state_to_file(file_name, self.employeed + self.outlookers, line_history)
 
 #test
-<<<<<<< HEAD
-fn = 'bee50_3'
-=======
+
 
 # fn = 'bee'
 # o = Rosenbrock()
@@ -118,7 +116,7 @@ fn = 'bee50_3'
 # b=BeeOptimizer(o, configuration, fn, 10)
 
 fn = 'bee50_2'
->>>>>>> 74c760c2310adfa0e78a35b37f94f85b43b2e57a
+
 o = Rastrigin()
 x, y = o.best_pos
 best = o.evaluate(x, y)
@@ -127,7 +125,6 @@ population_size = [10, 30, 50, 70, 100]
 trials_num = [10,20,30] #[5,7,10,12,15,17,20,22,25,27,30]
 
 
-<<<<<<< HEAD
 for l in range(10):
     for i in range(len(population_size)):
             for k in range(len(trials_num)):
@@ -138,17 +135,6 @@ for l in range(10):
 
                 configuration = list(configuration_settings.values())
                 b=BeeOptimizer(o, configuration, fn)
-=======
-# for i in range(len(population_size)):
-#         for k in range(len(trials_num)):
-#             configuration_settings={'rozmiar populacji': population_size[i],
-#                             'liczba iteracji': 50,
-#                             'liczba prób' : trials_num[k],
-#                             'optimum globalne': best}
-
-#             configuration = list(configuration_settings.values())
-#             b=BeeOptimizer(o, configuration, fn)
->>>>>>> 74c760c2310adfa0e78a35b37f94f85b43b2e57a
 
                 b.initialize_swarm()
                 b.release_the_swarm()
@@ -157,24 +143,4 @@ for l in range(10):
 #b.save_animation('bees')
 #b.save_state('bees_hist', False)
 # False - historia nie wygląda zbyt ładnie jeszcze
-
-
-# fn = 'bee50_goal'
-# goal = [Rastrigin(), Ackley(), Bukin6(), Rosenbrock(), Trid]
-# for i in range(len(goal)):
-#     o= goal[i]
-#     x, y = o.best_pos
-#     best = o.evaluate(x, y)
-#     configuration_settings={'rozmiar populacji': 30,
-#                             'liczba iteracji': 50,
-#                             'liczba prób' : 30,
-#                             'optimum globalne': best,
-#                             'funkcja oceny': o.__class__.__name__}
-
-#     configuration = list(configuration_settings.values())
-#     b=BeeOptimizer(o, configuration, fn)
-
-#     b.initialize_swarm()
-#     b.release_the_swarm()
-#     b.save_optimal_tracing(configuration_settings)
 
