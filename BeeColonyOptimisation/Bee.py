@@ -36,7 +36,8 @@ class Bee(Entity):
                 else:
                     self.trial += 1
         except AssertionError:
-            logging.error("The bee was trying to escape outside the boundaries!")
+            pass
+            # logging.error("The bee was trying to escape outside the boundaries!")
 
 
 

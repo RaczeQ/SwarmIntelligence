@@ -3,11 +3,12 @@ sys.path.insert(1, '.')
 
 from Optimisation.Optimizer import Optimizer
 from ParticleSwarmOptimisation.Particle import Particle
-from ObjectiveFunction import ALL_FUNCTIONS
+from ObjectiveFunction import ALL_FUNCTIONS, Rosenbrock, Sphere, Trid
 from Plotter import Plotter
 import logging
 import numpy as np
 import pandas as pd
+import os
 class ParticleSwarmOptimizer(Optimizer):
 
     def __init__(self, objective_function, configuration, result_file_name, skip_frames=0, plot=True):
@@ -84,12 +85,12 @@ class ParticleSwarmOptimizer(Optimizer):
 # configuration = list(configuration_settings.values())
 # b=ParticleSwarmOptimizer(o, configuration, fn, 10)
 
-c1_list = np.arange(0.5, 4.5, 0.5)
-c2_list =  np.arange(0.5, 4.5, 0.5)
-w_list = np.arange(1, 6, 1)
+c1_list = np.arange(0.2, 2.2, 0.2)
+c2_list =  np.arange(0.2, 2.2, 0.2)
+w_list = np.arange(0.1, 5.1, 0.1)
 
 
-for func in ALL_FUNCTIONS:
+for func in [Rosenbrock, Sphere, Trid]:
     fn = f'pso_200_{func.__name__}'
     f = func()
     x, y = f.best_pos
@@ -99,7 +100,7 @@ for func in ALL_FUNCTIONS:
         # for c2 in c2_list:
         for c2 in [c1]:
             for w in w_list:
-                configuration_settings={'population_size': 100,
+                configuration_settings = {'population_size': 120,
                                         'iteration_number': 50,
                                         'weight' : w,
                                         'c1': c1,
@@ -115,6 +116,7 @@ for func in ALL_FUNCTIONS:
                     row = b.save_optimal_tracing(configuration_settings)
                     values.append(row)
     df = pd.concat(values, axis=0, ignore_index=True) 
+    # file_path = os.path.join('results', f'{fn}.txt')
     df.to_csv(fn)
 
 # b.save_animation('pso')

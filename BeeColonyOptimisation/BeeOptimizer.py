@@ -4,7 +4,7 @@ sys.path.insert(1, '.')
 from Optimisation.Optimizer import Optimizer
 from EmployeeBee import EmployeeBee
 from OnLookerBee import OnLookerBee
-from ObjectiveFunction import Ackley, Rastrigin, Bukin6, Rosenbrock, Trid
+from ObjectiveFunction import ALL_FUNCTIONS, Ackley, Rastrigin, Bukin6, Rosenbrock, Trid
 import numpy as np
 import logging
 from Plotter import Plotter
@@ -109,13 +109,13 @@ class BeeOptimizer(Optimizer):
 # configuration = list(configuration_settings.values())
 # b=BeeOptimizer(o, configuration, fn, 10)
 
-fn = 'bee50_2'
-o = Rastrigin()
-x, y = o.best_pos
-best = o.evaluate(x, y)
-#5, 10, 15,
-population_size = [ 5, 10, 20, 30]
-trials_num = [10,20,30] #[5,7,10,12,15,17,20,22,25,27,30]
+# fn = 'bee50_2'
+# o = Rastrigin()
+# x, y = o.best_pos
+# best = o.evaluate(x, y)
+# #5, 10, 15,
+# population_size = [ 5, 10, 20, 30]
+# trials_num = [10,20,30] #[5,7,10,12,15,17,20,22,25,27,30]
 
 
 # for i in range(len(population_size)):
@@ -136,23 +136,32 @@ trials_num = [10,20,30] #[5,7,10,12,15,17,20,22,25,27,30]
 #b.save_state('bees_hist', False)
 # False - historia nie wygląda zbyt ładnie jeszcze
 
+import pandas as pd
 
-fn = 'bee50_goal'
-goal = [Rastrigin(), Ackley(), Bukin6(), Rosenbrock(), Trid]
-for i in range(len(goal)):
-    o= goal[i]
+
+goal = ALL_FUNCTIONS
+for g in goal:
+    o = g()
     x, y = o.best_pos
     best = o.evaluate(x, y)
-    configuration_settings={'rozmiar populacji': 30,
-                            'liczba iteracji': 50,
-                            'liczba prób' : 30,
-                            'optimum globalne': best,
-                            'funkcja oceny': o.__class__.__name__}
+    values = []
+    fn = f'bee_{g.__name__}'
+    for trials in range(5, 55, 5):
+        configuration_settings={'rozmiar populacji': 30,
+                                'liczba iteracji': 50,
+                                'iteration_number': 50,
+                                'liczba prób' : trials,
+                                'optimum globalne': best,
+                                'funkcja oceny': o.__class__.__name__}
 
-    configuration = list(configuration_settings.values())
-    b=BeeOptimizer(o, configuration, fn)
+        configuration = list(configuration_settings.values())
+        b=BeeOptimizer(o, configuration, fn, plot=False)
 
-    b.initialize_swarm()
-    b.release_the_swarm()
-    b.save_optimal_tracing(configuration_settings)
+        b.initialize_swarm()
+        b.release_the_swarm()
+        row = b.save_optimal_tracing(configuration_settings)
+        values.append(row)
+    df = pd.concat(values, axis=0, ignore_index=True) 
+    # file_path = os.path.join('results', f'{fn}.txt')
+    df.to_csv(fn)
 

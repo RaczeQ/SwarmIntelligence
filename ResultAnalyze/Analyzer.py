@@ -5,6 +5,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
+def ensure_dir(directory):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
 class Analyzer():
 
     def __init__(self):
@@ -28,7 +32,8 @@ class Analyzer():
         for j in range(len(population_num)):
             for k in range(len(trials)):                      
                 filtered =  df[ (df['rozmiar populacji']==population_num[j])  & (df['liczba prób']==trials[k]) ]
-                grouped = filtered.groupby(['rozmiar populacji', 'liczba iteracji', 'weight', 'iter'])
+                # grouped = filtered.groupby(['rozmiar populacji', 'liczba iteracji', 'weight', 'iter'])
+                grouped = filtered.groupby(['rozmiar populacji', 'liczba iteracji', 'iter'])
                 x_data = np.arange(1, len(grouped)+1, 1)
                 y_data = grouped[optimum_type].mean()
                 plt.plot(x_data , y_data,  linewidth=1,  label='rozmiar populacji='+str(population_num[j])+', liczba prób='+ str(trials[k]))
@@ -42,6 +47,7 @@ class Analyzer():
         plt.legend()
        
         file_path = os.path.join('results', f'{file_name}+{optimum_type}.png')
+        ensure_dir('results')
         plt.savefig(file_path)
 
     def visualize_pso_results(self, file_name, optimum_type,  title):
@@ -72,13 +78,27 @@ class Analyzer():
         plt.legend(ncol=2)
        
         file_path = os.path.join('results', f'{file_name}+{optimum_type}.png')
+        ensure_dir('results')
         plt.savefig(file_path)
 
 
 a = Analyzer()
-# a.visualize_bees_results('bee50_2',  'najlepsze śledzone', 'Najlepsze znalezione optimum w danym kroku iteracji przez pszczołe zwiadowcę')
-# a.visualize_bees_results('bee50_2', 'najlepsze znalezione', 'Najlepsze znalezione optimum w danym kroku iteracji przez pszczołe pracującą')
-a.visualize_pso_results('pso_200_Ackley', 'najlepsze śledzone', 'Najlepsze znalezione optimum w danym kroku iteracji')
-a.visualize_pso_results('pso_200_Ackley', 'najlepsze znalezione', 'Najlepsze znalezione dotychczas optimum w danym kroku iteracji')
-
+a.visualize_bees_results('bee_Ackley',  'najlepsze śledzone', 'Najlepsze znalezione optimum w danym kroku iteracji przez pszczołe zwiadowcę')
+a.visualize_bees_results('bee_Ackley', 'najlepsze znalezione', 'Najlepsze znalezione optimum w danym kroku iteracji przez pszczołe pracującą')
+a.visualize_bees_results('bee_Bukin6',  'najlepsze śledzone', 'Najlepsze znalezione optimum w danym kroku iteracji przez pszczołe zwiadowcę')
+a.visualize_bees_results('bee_Bukin6', 'najlepsze znalezione', 'Najlepsze znalezione optimum w danym kroku iteracji przez pszczołe pracującą')
+a.visualize_bees_results('bee_Rastrigin',  'najlepsze śledzone', 'Najlepsze znalezione optimum w danym kroku iteracji przez pszczołe zwiadowcę')
+a.visualize_bees_results('bee_Rastrigin', 'najlepsze znalezione', 'Najlepsze znalezione optimum w danym kroku iteracji przez pszczołe pracującą')
+a.visualize_bees_results('bee_Rosenbrock',  'najlepsze śledzone', 'Najlepsze znalezione optimum w danym kroku iteracji przez pszczołe zwiadowcę')
+a.visualize_bees_results('bee_Rosenbrock', 'najlepsze znalezione', 'Najlepsze znalezione optimum w danym kroku iteracji przez pszczołe pracującą')
+a.visualize_bees_results('bee_Sphere',  'najlepsze śledzone', 'Najlepsze znalezione optimum w danym kroku iteracji przez pszczołe zwiadowcę')
+a.visualize_bees_results('bee_Sphere', 'najlepsze znalezione', 'Najlepsze znalezione optimum w danym kroku iteracji przez pszczołe pracującą')
+a.visualize_bees_results('bee_Trid',  'najlepsze śledzone', 'Najlepsze znalezione optimum w danym kroku iteracji przez pszczołe zwiadowcę')
+a.visualize_bees_results('bee_Trid', 'najlepsze znalezione', 'Najlepsze znalezione optimum w danym kroku iteracji przez pszczołe pracującą')
+# a.visualize_pso_results('pso_200_Trid', 'najlepsze śledzone', 'Najlepsze znalezione optimum w danym kroku iteracji')
+# a.visualize_pso_results('pso_200_Trid', 'najlepsze znalezione', 'Najlepsze znalezione dotychczas optimum w danym kroku iteracji')
+# a.visualize_pso_results('pso_200_Rastrigin', 'najlepsze śledzone', 'Najlepsze znalezione optimum w danym kroku iteracji')
+# a.visualize_pso_results('pso_200_Rastrigin', 'najlepsze znalezione', 'Najlepsze znalezione dotychczas optimum w danym kroku iteracji')
+# a.visualize_pso_results('pso_200_Rosenbrock', 'najlepsze śledzone', 'Najlepsze znalezione optimum w danym kroku iteracji')
+# a.visualize_pso_results('pso_200_Rosenbrock', 'najlepsze znalezione', 'Najlepsze znalezione dotychczas optimum w danym kroku iteracji')
 

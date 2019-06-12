@@ -29,6 +29,8 @@ class Optimizer():
         pass
 
     def save_optimal_tracing(self, configuration):
+        # print(self.optimal_tracing)
+        # print(self.optimal_solution)
         file_path = os.path.join('results', f'{self.result_file_name}.txt')
         keys = list(configuration.keys())
         values = list(configuration.values())   
@@ -41,7 +43,10 @@ class Optimizer():
         result = np.concatenate((v, t), axis=1)
         result = np.concatenate((result, s), axis=1)
         iteration_n = configuration.get('iteration_number')
+        # print(iteration_n)
         iter_n = np.reshape(np.arange(0, iteration_n), (-1, 1))
+        # print(result.shape)
+        # print(iter_n.shape)
         result = np.concatenate((result, iter_n), axis=1 )
         row = pd.DataFrame( result, columns=keys)
         return row
