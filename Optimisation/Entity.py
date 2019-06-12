@@ -17,9 +17,11 @@ class Entity(object):
         self.trial = 0
 
     def set_new_position(self, x, y):
-        self.history_of_points.append((self.x, self.y))
         self.x = x
         self.y = y
+
+    def save_to_history(self):
+        self.history_of_points.append((self.x, self.y))
 
     def evaluate_position(self, x, y):
         return self.objective_function.evaluate(x, y)

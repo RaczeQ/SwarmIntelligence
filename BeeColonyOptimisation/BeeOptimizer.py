@@ -12,11 +12,13 @@ from Plotter import Plotter
 
 class BeeOptimizer(Optimizer):
 
-    def __init__(self, objective_function, configuration, result_file_name, skip_frames=0):
+    def __init__(self, objective_function, configuration, result_file_name, skip_frames=0, plot=True):
         super().__init__(objective_function, configuration[0], configuration[1] ,result_file_name)
         self.max_trials = configuration[2]
         self.skip_frames = skip_frames
-        self.plotter = Plotter(objective_function, 'Bees')
+        self.plot = plot
+        if self.plot:
+            self.plotter = Plotter(objective_function, 'Bees')
 
     def initialize_swarm(self):
         self.initialize_population()
@@ -32,16 +34,21 @@ class BeeOptimizer(Optimizer):
         self.outlookers = [OnLookerBee(self.objective_function) for  i in range(int(self.population_size/2))]
 
     def release_the_swarm(self):
+        for b in self.employeed + self.outlookers:
+            b.save_to_history()
         for i in range(self.iteration_number):
             self.explore()
             self.calculate_probabilities()
             self.find_best_bees()
             self.onlook()
             self.update_optimal_solution_tracking()
-            if self.skip_frames == 0 or i % self.skip_frames == 0:
+            if self.plot and (self.skip_frames == 0 or i % self.skip_frames == 0):
                 self.plotter.add_frame(i, self.employeed + self.outlookers)
-            print(i)
-        self.plotter.add_frame(self.iteration_number, self.employeed + self.outlookers)
+            # print(i)
+            for b in self.employeed + self.outlookers:
+                b.save_to_history()
+        if self.plot:
+            self.plotter.add_frame(self.iteration_number, self.employeed + self.outlookers)
             
     def explore(self):
         self.make_employee_bees_working()
@@ -87,6 +94,7 @@ class BeeOptimizer(Optimizer):
             self.outlookers[i].onlook(self.best_bees, self.max_trials)
 
     def save_state(self, file_name, line_history):
+        assert self.plot
         self.plotter.save_state_to_file(file_name, self.employeed + self.outlookers, line_history)
 
 #test

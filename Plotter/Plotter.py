@@ -111,8 +111,7 @@ class Plotter(object):
 
         if best_value is not None:
             txt = self.ax.text(0, 1.01, f'Best value: {best_value:.3f}', transform=self.ax.transAxes)
-        
-        objects.append(txt)
+            objects.append(txt)
 
         if line_history:
             for idx, ent in enumerate(entities):
