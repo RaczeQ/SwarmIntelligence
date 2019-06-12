@@ -46,13 +46,17 @@ o = Rastrigin()
 
 max_beta=[0.2, 0.3]
 absorption_coefficient = [0.2, 0.3]
+x, y = o.best_pos
+best = o.evaluate(x, y)
 
 for i in range(len(max_beta)):
     for j in range(len(absorption_coefficient)):
         configuration_settings={'population_size': 50,
                         'iteration_number': 50,
-                        'max_beta' : 0.7,
-                        'absorption_coefficient': 0.3}
+                        'max_beta' : max_beta[i],
+                        'absorption_coefficient': absorption_coefficient[j],
+                        'optimum globalne': best}
+
         configuration = list(configuration_settings.values())
         b=FireflyOptimizer(o, configuration, fn)
 
